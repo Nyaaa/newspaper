@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Sum
 
 
 # Create your models here.
@@ -16,11 +15,11 @@ class Author(models.Model):
         self._rating = 0
 
         # posts by Author
-        self._rating += Post.objects.filter(author=self).aggregate(Sum('rating'))['rating__sum'] * 3
+        self._rating += Post.objects.filter(author=self).aggregate(models.Sum('rating'))['rating__sum'] * 3
         # comments to posts by Author
-        self._rating += Comment.objects.filter(post__author=self).aggregate(Sum('rating'))['rating__sum']
+        self._rating += Comment.objects.filter(post__author=self).aggregate(models.Sum('rating'))['rating__sum']
         # comments by Author
-        self._rating += Comment.objects.filter(user=self.user).aggregate(Sum('rating'))['rating__sum']
+        self._rating += Comment.objects.filter(user=self.user).aggregate(models.Sum('rating'))['rating__sum']
 
         self.save()
 
@@ -34,19 +33,15 @@ class PostCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 
-news = 'n'
-article = 'a'
-
-POST_TYPES = [
-    (news, 'News'),
-    (article, 'Article')
-]
-
-
 class Post(models.Model):
+    class PostType(models.IntegerChoices):
+        ARTICLE = 1
+        NEWS = 2
+
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    type = models.CharField(max_length=1, choices=POST_TYPES, default=news)
+    type = models.PositiveSmallIntegerField(choices=PostType.choices, default=PostType.NEWS)
     created = models.DateTimeField(auto_now_add=True)
+    category = models.ManyToManyField(Category, through=PostCategory)
     title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)
