@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>{{ flatpage.title }} - Material Design for Bootstrap</title>
+  <title>{% block title %}{{ flatpage.title }}{% endblock title %} - Material Design for Bootstrap</title>
   {% load static %}
   <!-- MDB icon -->
   <link rel="icon" href="{% static 'img/mdb-favicon.ico' %}" type="image/x-icon" />
@@ -67,18 +67,19 @@
     <!-- Container wrapper -->
   </nav>
   <!-- Navbar -->
-  <!-- Jumbotron -->
-  <div class="p-5 text-center bg-light mb-5">
-    <h1 class="mb-3">
-      {% block title %}{{ flatpage.title }}{% endblock title %}
-    </h1>
-    <p>
-      {% block content %}{{ flatpage.content }}{% endblock content %}
-    </p>
-    <a class="btn btn-primary btn-lg" href="#"
-      role="button">Dummy button</a>
+  <div class="container">
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+      {% block content %}
+      {{ flatpage.content }}
+      {% endblock content %}
+    </div>
+    <div class="col-md-3">
+    </div>
   </div>
-  <!-- Jumbotron -->
+  </div>
   <!-- Footer -->
   <footer class="bg-light text-center text-white">
     <!-- Grid container -->
