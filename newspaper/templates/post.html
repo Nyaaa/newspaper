@@ -5,8 +5,23 @@
 {{ post.title }}
 {% endblock title %}
 
+{% block breadcrumbs %}
+<!-- Breadcrumb -->
+<nav class="d-flex">
+  <h6 class="mb-0">
+    <a href="/" class="text-reset">Home</a>
+    <span>&rsaquo;</span>
+    <a href="/news" class="text-reset">Posts</a>
+    <span>&rsaquo;</span>
+    <a href="#" class="text-reset"><u>{{ post.title|censor }}</u></a>
+  </h6>
+</nav>
+<br>
+<!-- Breadcrumb -->
+{% endblock breadcrumbs %}
+
 {% block content %}
 <h1 class="text-center">{{ post.title|censor }}</h1>
-<small class="text-muted">{{ post.created|date:'d.m.Y' }}</small>
+<small class="text-muted">Posted by {{ post.author }} on {{ post.created|date:'d.m.Y' }}</small>
 <p>{{ post.text|censor }}</p>
 {% endblock content %}

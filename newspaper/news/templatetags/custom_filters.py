@@ -10,7 +10,7 @@ CENSOR_LIST = ['profanity_test', 'ass']
 @register.filter()
 def censor(text: str) -> str:
     if not isinstance(text, str):
-        raise TypeError('Censor input must be str')
+        raise TypeError('Censor input must be a string')
 
     for word in CENSOR_LIST:
         text = re.sub(r"\b" + f"({word[0]}){word[1:]}" + r"\b",

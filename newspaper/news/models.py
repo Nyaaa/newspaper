@@ -23,6 +23,9 @@ class Author(models.Model):
 
         self.save()
 
+    def __str__(self):
+        return f'{self.user.get_full_name() or self.user}'
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)

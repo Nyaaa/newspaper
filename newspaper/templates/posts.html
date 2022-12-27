@@ -4,46 +4,58 @@
 {% block title %}
 Posts
 {% endblock title %}
-{% block content %}
 
+{% block breadcrumbs %}
+<!-- Breadcrumb -->
+<nav class="d-flex">
+  <h6 class="mb-0">
+    <a href="/" class="text-reset">Home</a>
+    <span>&rsaquo;</span>
+    <a href="/news" class="text-reset">Posts</a>
+  </h6>
+</nav>
+<br>
+<!-- Breadcrumb -->
+{% endblock breadcrumbs %}
+
+{% block content %}
 <h1 class="text-center">All posts</h1>
 <p class="text-end">Posts: {{ posts|length }}</p>
-    {% if posts %}
+  {% if posts %}
     {% for post in posts %}
-    <div class="card mb-3" style="max-width: 700px;">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img
-            src="http://placekitten.com/250/250"
-            alt="{{ post.title }}"
-            class="img-fluid rounded-start"
-          />
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-              <a href={{ post.id }}><h5 class="card-title">{{ post.title|censor }}</h5></a>
-            <p class="card-text">{{ post.text|truncatewords:20|censor }}</p>
-              <div class="row">
+      <div class="card mb-3" style="max-width: 700px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="http://placekitten.com/250/250"
+              alt="{{ post.title }}"
+              class="img-fluid rounded-start"
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <a href="{{ post.pk }}"><h5 class="card-title">{{ post.title|censor }}</h5></a>
+              <p class="card-text">{{ post.text|truncatewords:20|censor }}</p>
+                <div class="row">
                   <div class="col-md-6">
                     <p class="card-text">
                     <small class="text-muted">{{ post.created|date:'d.m.Y' }}</small>
                     </p>
                   </div>
                   <div class="col-md-6 text-end">
-                      			  {% if post.get_type_display == 'News' %}
-				<span class="badge rounded-pill badge-success">{{ post.get_type_display }}</span>
-			  {% else %}
-				<span class="badge rounded-pill badge-warning">{{ post.get_type_display }}</span>
-			  {% endif %}
-		  </div>
-        </div>
-
+                    {% if post.get_type_display == 'News' %}
+                      <span class="badge rounded-pill badge-success">{{ post.get_type_display }}</span>
+                    {% else %}
+                      <span class="badge rounded-pill badge-warning">{{ post.get_type_display }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     {% endfor %}
-    {% else %}
-        <h2>Nothing here!</h2>
-    {% endif %}
+  {% else %}
+    <h2>Nothing here!</h2>
+  {% endif %}
 {% endblock content %}
