@@ -23,5 +23,10 @@
 {% block content %}
 <h1 class="text-center">{{ post.title|censor }}</h1>
 <small class="text-muted">Posted by {{ post.author }} on {{ post.created|date:'d.m.Y' }}</small>
+<div>
+  {% for category in post.category.all %}
+  <span class="badge rounded-pill bg-secondary">{{ category }}</span>
+  {% endfor %}
+</div>
 <p>{{ post.text|censor }}</p>
 {% endblock content %}
