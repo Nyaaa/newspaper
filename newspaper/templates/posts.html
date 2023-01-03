@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
+{% load widget_tweaks %}
 
 {% block title %}
 Posts
@@ -20,9 +21,21 @@ Posts
 
 {% block content %}
 <!-- Filter -->
-  <form action="" method="get">
-    {{ filterset.form.as_p }}
-    <input type="submit" value="Search" />
+  <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
+
+      {% for field in filterset.form.visible_fields %}
+        <div class="col-12">
+            <label for="{{ field.id_for_label }}" class="">{{ field.label }}</label>
+            {{ field|add_class:'form-control' }}
+            {% for error in field.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+        </div>
+      {% endfor %}
+      <div class="col-12">
+        <button class="btn btn-outline-primary" type="submit" name="button">Filter</button>
+      </div>
+
   </form>
   <hr>
 <!-- Filter -->
