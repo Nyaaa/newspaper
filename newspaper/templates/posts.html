@@ -19,8 +19,16 @@ Posts
 {% endblock breadcrumbs %}
 
 {% block content %}
-<h1 class="text-center">All posts</h1>
-<p class="text-end">Posts: {{ posts|length }}</p>
+<!-- Filter -->
+  <form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" value="Search" />
+  </form>
+  <hr>
+<!-- Filter -->
+<!-- Content -->
+  <h1 class="text-center">All posts</h1>
+  <p class="text-end">Posts: {{ posts|length }}</p>
   {% if posts %}
     {% for post in posts %}
       <div class="card mb-3">
@@ -62,4 +70,35 @@ Posts
   {% else %}
     <h2>Nothing here!</h2>
   {% endif %}
+<!-- Content -->
+<!-- Pagination -->
+  <nav aria-label="Pagination">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item"><a class="page-link" href="?{% url_replace page=page_obj.previous_page_number %}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="?{% url_replace page=1 %}">1</a></li>
+      {% if page_obj.previous_page_number != 1 %}
+        <li class="page-item">...</li>
+        <li class="page-item"><a class="page-link" href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a></li>
+      {% endif %}
+    {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+    {% endif %}
+    
+    <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
+
+    {% if page_obj.has_next %}
+      <li class="page-item"><a class="page-link" href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a></li>
+      {% if paginator.num_pages != page_obj.next_page_number %}
+        <li class="page-item">...</li>
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+      {% endif %}
+      <li class="page-item"><a class="page-link" href="?{% url_replace page=page_obj.next_page_number %}">Next</a></li>
+    {% else %}
+      <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+    {% endif %}
+    
+  </ul>
+  </nav>
+<!-- Pagination -->
 {% endblock content %}
