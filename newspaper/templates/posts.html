@@ -3,16 +3,16 @@
 {% load widget_tweaks %}
 
 {% block title %}
-Posts
+{{ page_title }}
 {% endblock title %}
 
 {% block breadcrumbs %}
 <!-- Breadcrumb -->
-<nav class="d-flex">
+<nav class="d-flex" aria-label="Breadcrumbs">
   <h6 class="mb-0">
     <a href="/" class="text-reset">Home</a>
     <span>&rsaquo;</span>
-    <a href="/news" class="text-reset">Posts</a>
+    <a href="{{ request.path }}" class="text-reset">{{ page_title }}</a>
   </h6>
 </nav>
 <br>
@@ -83,6 +83,11 @@ Posts
   {% else %}
     <h2>Nothing here!</h2>
   {% endif %}
+  <div class="fixed-action-btn" id="new_post">
+    <a class="btn btn-floating text-white btn-lg" style="background-color: #3B71CA;" href="{{ request.path }}create">
+      <i class="fas fa-pencil-alt"></i>
+    </a>
+  </div>
 <!-- Content -->
 <!-- Pagination -->
   <nav aria-label="Pagination">

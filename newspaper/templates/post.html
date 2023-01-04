@@ -29,4 +29,18 @@
   {% endfor %}
 </div>
 <p>{{ post.text|censor }}</p>
+<br>
+<div class="fixed-action-btn" id="fixed1">
+  <a class="btn btn-floating text-white btn-lg" href="{{ request.path }}/edit" style="background-color: #E4A11B;">
+    <i class="fas fa-edit"></i>
+  </a>
+
+  <ul class="list-unstyled">
+    <li>
+      <a class="btn text-white btn-floating btn-lg" href="{{ request.path }}/delete" style="background-color: #DC4C64;">
+        <i class="fas fa-trash"></i>
+      </a>
+    </li>
+  </ul>
+</div>
 {% endblock content %}

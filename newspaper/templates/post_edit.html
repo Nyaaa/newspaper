@@ -2,7 +2,13 @@
 {% load widget_tweaks %}
 
 {% block content %}
-<h1>New post</h1>
+<h1>
+  {% if post.title %}
+    {{ post.title }}
+  {% else %}
+    New post
+  {% endif %}
+</h1>
 <hr>
 <form action="" method="post">
     {% csrf_token %}
@@ -27,7 +33,5 @@
       </button>
       <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-default">Cancel</a>
     </div>
-
-    <input type="submit" value="Save" />
 </form>
 {% endblock content %}
