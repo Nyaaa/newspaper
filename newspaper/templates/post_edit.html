@@ -1,6 +1,14 @@
 {% extends 'flatpages/default.html' %}
 {% load widget_tweaks %}
 
+{% block title %}
+  {% if post.title %}
+    - Edit post
+  {% else %}
+    - New post
+  {% endif %}
+{% endblock title %}
+
 {% block content %}
 <h1>
   {% if post.title %}
@@ -26,12 +34,13 @@
             {% endfor %}
         </div>
     {% endfor %}
-
+    <br>
     <div class="form-group">
       <button type="submit" class="btn btn-success">
-        <span class="glyphicon glyphicon-ok"></span> Save
+        <span class="glyphicon glyphicon-ok"></span>Save
       </button>
       <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-default">Cancel</a>
     </div>
 </form>
+<br>
 {% endblock content %}

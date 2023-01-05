@@ -5,9 +5,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>{% block title %}{{ flatpage.title }}{% endblock title %} - Material Design for Bootstrap</title>
+  <title>NyankoNews {% block title %}{% endblock title %}</title>
   <!-- MDB icon -->
-  <link rel="icon" href="{% static 'img/mdb-favicon.ico' %}" type="image/x-icon" />
+  <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <!-- Google Fonts Roboto -->
@@ -38,11 +38,11 @@
       <!-- Collapsible wrapper -->
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Navbar brand -->
-        <a class="navbar-brand mt-2 mt-lg-0" href="#">
+        <a class="navbar-brand mt-0 mt-lg-0" href="#">
           <img
-            src="https://mdbcdn.b-cdn.net/img/logo/mdb-transaprent-noshadows.webp"
-            height="15"
-            alt="MDB Logo"
+            src="{% static 'img/icon.png' %}"
+            height="30"
+            alt="Logo"
             loading="lazy"
           />
         </a>
@@ -78,10 +78,8 @@
       {% endblock breadcrumbs %}
       {% block content %}
         <!-- Jumbotron -->
-        <div class="p-5 text-center bg-light">
-          <h1 class="mb-3">{{ flatpage.title }}</h1>
-          <h4 class="mb-3">{{ flatpage.content }}</h4>
-          <a class="btn btn-primary" href="/news" role="button">Call to action</a>
+        <div class="p-5 text-center bg-image">
+          <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="Wild Landscape" />
         </div>
         <!-- Jumbotron -->
       {% endblock content %}

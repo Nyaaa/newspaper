@@ -7,5 +7,13 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['category', 'author', 'title', 'text']
+        fields = ['author', 'category', 'title', 'text']  # TODO remove author
 
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("title") == cleaned_data.get("text"):
+            raise ValidationError({
+                "text": "Text and title cannot be identical"
+            })
+
+        return cleaned_data

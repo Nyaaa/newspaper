@@ -1,8 +1,9 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Post
+from .models import Post, Author
 from .filters import PostFilter
 from .forms import PostForm
+
 
 # Create your views here.
 class PostList(ListView):
@@ -14,6 +15,11 @@ class PostList(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        path = self.request.META.get('PATH_INFO')
+        if path == '/articles/':
+            queryset = queryset.filter(type=Post.PostType.ARTICLE)
+        else:
+            queryset = queryset.filter(type=Post.PostType.NEWS)
         self.filterset = PostFilter(self.request.GET, queryset)
         return self.filterset.qs
 
@@ -21,16 +27,18 @@ class PostList(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         path = self.request.META.get('PATH_INFO')
-        if path == '/articles/':
-            context['page_title'] = 'Articles'
-        else:
-            context['page_title'] = 'News'
+        if 'articles' in path:
+            context['page_title'] = 'articles'
+        elif 'news' in path:
+            context['page_title'] = 'news'
         return context
+
 
 class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+
 
 class PostCreate(CreateView):
     form_class = PostForm
@@ -40,14 +48,17 @@ class PostCreate(CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         path = self.request.META.get('PATH_INFO')
+        # post.author = Author.objects.get(user=self.request.user)  # TODO handle exceptions
         if path == '/articles/create/':
             post.type = Post.PostType.ARTICLE
         return super().form_valid(form)
+
 
 class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
+
 
 class PostDelete(DeleteView):
     model = Post

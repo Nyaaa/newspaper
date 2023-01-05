@@ -3,7 +3,7 @@
 {% load widget_tweaks %}
 
 {% block title %}
-{{ page_title }}
+- {{ page_title }}
 {% endblock title %}
 
 {% block breadcrumbs %}
@@ -21,27 +21,30 @@
 
 {% block content %}
 <!-- Filter -->
+{% if 'search' in request.path %}
   <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
-
-      {% for field in filterset.form.visible_fields %}
-        <div class="col-12">
-            <label for="{{ field.id_for_label }}" class="">{{ field.label }}</label>
-            {{ field|add_class:'form-control' }}
-            {% for error in field.errors %}
-            <span class="help-block">{{ error }}</span>
-            {% endfor %}
-        </div>
-      {% endfor %}
+    {% for field in filterset.form.visible_fields %}
       <div class="col-12">
-        <button class="btn btn-outline-primary" type="submit" name="button">Filter</button>
+        <label for="{{ field.id_for_label }}" class="">{{ field.label }}</label>
+        {{ field|add_class:'form-control' }}
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
       </div>
-
+    {% endfor %}
+    <div class="col-12">
+      <button class="btn btn-outline-primary" type="submit" name="button">Filter</button>
+    </div>
   </form>
   <hr>
+{% endif %}
 <!-- Filter -->
 <!-- Content -->
-  <h1 class="text-center">All posts</h1>
-  <p class="text-end">Posts: {{ posts|length }}</p>
+  <h1 class="text-center">All {{ page_title }}</h1>
+  <div class="text-end">
+    <a class="btn btn-link" href="{{ request.path }}search" data-mdb-ripple-color="dark" role="button">Search</a>
+    <a class="btn btn-link disabled" role="button">Posts: {{ posts|length }}</a>
+  </div>
   {% if posts %}
     {% for post in posts %}
       <div class="card mb-3">
@@ -60,7 +63,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <p class="card-text">
-                    <small class="text-muted">{{ post.created|date:'d.m.Y' }}</small>
+                    <small class="text-muted">{{ post.created|date:'d M Y' }}</small>
                     </p>
                     {% if post.get_type_display == 'News' %}
                       <span class="badge rounded-pill badge-success">{{ post.get_type_display }}</span>
@@ -102,7 +105,7 @@
     {% else %}
       <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
     {% endif %}
-    
+
     <li class="page-item active"><a class="page-link" href="#">{{ page_obj.number }}</a></li>
 
     {% if page_obj.has_next %}
@@ -115,7 +118,7 @@
     {% else %}
       <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
     {% endif %}
-    
+
   </ul>
   </nav>
 <!-- Pagination -->
