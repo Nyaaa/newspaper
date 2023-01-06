@@ -21,7 +21,7 @@
 
 {% block content %}
 <!-- Filter -->
-{% if 'search' in request.path %}
+{% if 'search' not in request.path %}
   <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
     {% for field in filterset.form.visible_fields %}
       <div class="col-12">
@@ -42,11 +42,10 @@
 <!-- Content -->
   <h1 class="text-center">All {{ page_title }}</h1>
   <div class="text-end">
-    <a class="btn btn-link" href="{{ request.path }}search" data-mdb-ripple-color="dark" role="button">Search</a>
-    <a class="btn btn-link disabled" role="button">Posts: {{ posts|length }}</a>
+    <a class="btn btn-link disabled" role="button">Posts: {{ object_list|length }}</a>
   </div>
-  {% if posts %}
-    {% for post in posts %}
+  {% if object_list %}
+    {% for post in object_list %}
       <div class="card mb-3">
         <div class="row g-0">
           <div class="col-md-4">
@@ -58,7 +57,9 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <a href="{{ post.pk }}"><h5 class="card-title">{{ post.title|censor }}</h5></a>
+              <a href="{% if post.get_type_display == 'News' %}/news/{% else %}/articles/{% endif %}{{ post.pk }}">
+                <h5 class="card-title">{{ post.title|censor }}</h5>
+              </a>
               <p class="card-text">{{ post.text|truncatewords:20|censor }}</p>
                 <div class="row">
                   <div class="col-md-6">
@@ -86,11 +87,13 @@
   {% else %}
     <h2>Nothing here!</h2>
   {% endif %}
-  <div class="fixed-action-btn" id="new_post">
-    <a class="btn btn-floating text-white btn-lg" style="background-color: #3B71CA;" href="{{ request.path }}create">
-      <i class="fas fa-pencil-alt"></i>
-    </a>
-  </div>
+  {% if 'search' not in page_title %}
+    <div class="fixed-action-btn" id="new_post">
+      <a class="btn btn-floating text-white btn-lg" style="background-color: #3B71CA;" href="{{ request.path }}create">
+        <i class="fas fa-pencil-alt"></i>
+      </a>
+    </div>
+  {% endif %}
 <!-- Content -->
 <!-- Pagination -->
   <nav aria-label="Pagination">
