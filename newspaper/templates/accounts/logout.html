@@ -1,0 +1,13 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<br>
+<div class="text-center">
+  <h2>You logged out.</h2>
+  <p>Have a nice day!</p>
+  <a class="btn btn-primary" href="{{request.META.HTTP_REFERER|escape}}" role="button">
+  Go back
+  </a>
+</div>
+<br>
+{% endblock %}

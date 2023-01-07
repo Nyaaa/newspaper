@@ -87,12 +87,17 @@
   {% else %}
     <h2>Nothing here!</h2>
   {% endif %}
-  {% if 'search' not in page_title %}
-    <div class="fixed-action-btn" id="new_post">
-      <a class="btn btn-floating text-white btn-lg" style="background-color: #3B71CA;" href="{{ request.path }}create">
-        <i class="fas fa-pencil-alt"></i>
-      </a>
-    </div>
+  {% if 'search' not in page_title and user.is_authenticated %}
+    <!-- Edit button -->
+  <div class="fixed-action-btn" id="fixed1">
+    <a class="btn btn-floating text-white btn-lg" style="background-color: #3B71CA;" href="{{ request.path }}create">
+      <i class="fas fa-pencil-alt"></i>
+    </a>
+    <ul class="list-unstyled">
+<!--      If this empty ul is removed, the navbar dropdown breaks-->
+    </ul>
+  </div>
+    <!-- Edit button -->
   {% endif %}
 <!-- Content -->
 <!-- Pagination -->

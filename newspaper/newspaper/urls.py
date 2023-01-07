@@ -23,4 +23,5 @@ urlpatterns = [
     path('news/', include('news.urls'), name='news'),
     path('articles/', include('news.urls'), name='articles'),
     # path('search/', SearchResults.as_view(), name='search'),
+    path('accounts/', include('accounts.urls'), name='login'),
 ]
