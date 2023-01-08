@@ -1,0 +1,14 @@
+{% extends "account/base.html" %}
+{% load account %}
+{% load account socialaccount %}
+
+{% block content %}
+<h1>Hello, {% user_display user %}!</h1>
+<!--TODO: add name change form-->
+<!--TODO: restrict access to this page-->
+<ul>
+  <li><a href="{% url 'account_email' %}">Manage your email</a></li>
+  <li><a href="{% url 'account_change_password' %}">Change your password</a></li>
+  <li><a href="{% url 'socialaccount_connections' %}">Manage account connections</a></li>
+</ul>
+{% endblock content %}

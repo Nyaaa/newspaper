@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load account %}
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>NyankoNews {% block title %}{% endblock title %}</title>
+  <title>NyankoNews: {% block title %}{% endblock title %}</title>
   <!-- MDB icon -->
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
   <!-- Font Awesome -->
@@ -63,6 +64,7 @@
       <!-- Collapsible wrapper -->
 
       <!-- Right elements -->
+      <!-- Search -->
       <form class="d-flex input-group w-auto" action="{% url 'search' %}" method="get">
         <input
           name="q"
@@ -76,6 +78,34 @@
           <i class="fas fa-search"></i>
         </span>
       </form>
+      <!-- Notifications TODO add more -->
+      <div class="dropdown">
+        <a
+          class="text-reset me-3 dropdown-toggle hidden-arrow"
+          href="#"
+          id="navbarDropdownMenuLink"
+          role="button"
+          data-mdb-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <i class="fas fa-bell"></i>
+          {% if messages %}
+          <span class="badge rounded-pill badge-notification bg-danger">{{ messages|length }}</span>
+          {% else %}
+          <span class="badge rounded-pill badge-notification"></span>
+          {% endif %}
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuLink"
+        >
+          {% for message in messages %}
+          <li>
+            <a class="dropdown-item">{{message}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
       <!-- Icon dropdown -->
       <div class="nav-item me-3 me-lg-0 dropdown">
         <a
@@ -90,7 +120,7 @@
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
           {% if user.is_authenticated %}
           <li>
-            <a class="dropdown-item">Hello, {{ user.username }}!</a>
+            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
           </li>
           {% else %}
           <li>
@@ -100,11 +130,11 @@
           <li><hr class="dropdown-divider" /></li>
           {% if user.is_authenticated %}
           <li>
-            <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+            <a class="dropdown-item" href="{% url 'account_logout' %}">Log out</a>
           </li>
           {% else %}
           <li>
-            <a class="dropdown-item" href="{% url 'login' %}">Log in</a>
+            <a class="dropdown-item" href="{% url 'account_login' %}">Log in</a>
           </li>
           {% endif %}
         </ul>
@@ -122,13 +152,16 @@
     <div class="col-md-8">
       {% block breadcrumbs %}
       {% endblock breadcrumbs %}
+      {% block body %}
       {% block content %}
+        {{ flatpage.content }}
         <!-- Jumbotron -->
         <div class="p-5 text-center bg-image">
-          <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="Wild Landscape" />
+          <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="logo" />
         </div>
         <!-- Jumbotron -->
       {% endblock content %}
+      {% endblock body %}
     </div>
     <div class="col-md-2">
     </div>

@@ -1,0 +1,61 @@
+{% extends "account/base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+  <div class="text-center mb-3">
+    <p>Sign up with:</p>
+    <button type="button" class="btn btn-secondary btn-floating mx-1">
+      <i class="fab fa-facebook-f"></i>
+    </button>
+
+    <button type="button" class="btn btn-secondary btn-floating mx-1">
+      <i class="fab fa-google"></i>
+    </button>
+
+    <button type="button" class="btn btn-secondary btn-floating mx-1">
+      <i class="fab fa-twitter"></i>
+    </button>
+
+    <button type="button" class="btn btn-secondary btn-floating mx-1">
+      <i class="fab fa-github"></i>
+    </button>
+  </div>
+
+        <p class="text-center">or:</p>
+  <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+
+    {% if form %}
+      <!-- Form Errors -->
+      {% if form.errors %}
+        <ul class="errors">
+          {% for error in form.errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <!-- Display Form -->
+      {% for field in form %}
+        <div class="form-outline mb-4">
+          {{ field|add_class:'form-control' }}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <!-- Checkbox -->
+    <div class="form-check d-flex justify-content-center mb-4">
+      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+      <label class="form-check-label" for="form2Example33">
+        Subscribe to our newsletter
+      </label>
+    </div>
+
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+  </form>
+{% endblock %}
