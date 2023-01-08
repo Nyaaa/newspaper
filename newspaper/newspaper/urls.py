@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import TemplateView
 # from news.views import SearchResults
 
 urlpatterns = [
@@ -25,5 +24,5 @@ urlpatterns = [
     path('articles/', include('news.urls'), name='articles'),
     # path('search/', SearchResults.as_view(), name='search'),
     path('accounts/', include('allauth.urls')),
-    path('profile/', TemplateView.as_view(template_name="account/profile.html"), name='profile'),
+    path('usr/', include('usr.urls')),
 ]

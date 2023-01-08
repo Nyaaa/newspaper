@@ -87,7 +87,7 @@
   {% else %}
     <h2>Nothing here!</h2>
   {% endif %}
-  {% if 'search' not in page_title and user.is_authenticated %}
+  {% if request.user|in_group:"authors" %}
     <!-- Edit button -->
   <div class="fixed-action-btn" id="fixed1">
     <a class="btn btn-floating text-white btn-lg" style="background-color: #3B71CA;" href="{{ request.path }}create">

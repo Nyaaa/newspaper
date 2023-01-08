@@ -5,12 +5,9 @@
 {% block title %}Sign In{% endblock title %}
 
 {% block content %}
+<h1 class="text-center">Sign in</h1>
   <div class="text-center mb-3">
-    <p>Sign in with:</p>
-    <button type="button" class="btn btn-secondary btn-floating mx-1">
-      <i class="fab fa-facebook-f"></i>
-    </button>
-
+    <p>with:</p>
     <a type="button" class="btn btn-secondary btn-floating mx-1" href="{% provider_login_url 'google' %}">
       <i class="fab fa-google"></i>
     </a>

@@ -18,7 +18,7 @@
 </div>
 <p>{{ post.text|censor }}</p>
 <br>
-{% if user.is_authenticated %}
+{% if request.user|in_group:"authors" %}
   <!-- Edit button -->
   <div class="fixed-action-btn" id="fixed1">
     <a class="btn btn-floating text-white btn-lg" href="{{ request.path }}/edit" style="background-color: #E4A11B;">
