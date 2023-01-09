@@ -1,5 +1,6 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db.models import Q
 from .models import Post, Author
@@ -44,11 +45,12 @@ class PostDetail(DetailView):
     context_object_name = 'post'
 
 
-class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
+class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
     permission_required = ('news.add_post',)
+    success_message = 'Post "%(title)s" was created successfully'
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -59,18 +61,20 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdate(PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
+class PostUpdate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
     permission_required = ('news.change_post',)
+    success_message = 'Post "%(title)s" was updated successfully'
 
 
-class PostDelete(PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
+class PostDelete(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
     permission_required = ('news.delete_post',)
+    success_message = "Post was deleted successfully"
 
 
 class SearchResults(ListView):

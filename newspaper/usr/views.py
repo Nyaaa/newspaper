@@ -6,6 +6,7 @@ from .forms import NameChangeForm
 from django.contrib.auth.models import Group, User
 from django.urls import reverse_lazy
 from news.models import Author
+from django.contrib import messages
 
 
 # Create your views here.
@@ -36,4 +37,5 @@ def upgrade_me(request):
         authors.user_set.add(user)
     if not Author.objects.filter(user=user).first():
         Author.objects.create(user=user)
+        messages.success(request, 'Congratulations! You can now publish news and articles!')
     return redirect(reverse_lazy('profile'))
