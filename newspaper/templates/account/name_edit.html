@@ -1,0 +1,27 @@
+{% extends "account/base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Edit name" %}{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+  <h4>Change name:</h4>
+  {% csrf_token %}
+  <div class="form-group">
+    {% for field in form.visible_fields %}
+      <div class="form-outline">
+        <input type="text" name="{{ field.name }}" value="{{ field.value }}" id="{{ field.id_for_label }}" class="form-control" />
+        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {% for error in field.errors %}
+        <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      </div>
+    <br>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">
+      <span class="glyphicon glyphicon-ok"></span>Save
+    </button>
+  </div>
+</form>
+{% endblock content %}

@@ -8,7 +8,7 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ['author', 'category', 'title', 'text']  # TODO remove author
+        fields = ['category', 'title', 'text']
 
     def clean(self):
         cleaned_data = super().clean()

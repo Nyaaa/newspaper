@@ -53,7 +53,7 @@ class PostCreate(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         post = form.save(commit=False)
         path = self.request.META.get('PATH_INFO')
-        # post.author = Author.objects.get(user=self.request.user)  # TODO handle exceptions
+        post.author = Author.objects.get(user=self.request.user)
         if path == '/articles/create/':
             post.type = Post.PostType.ARTICLE
         return super().form_valid(form)
