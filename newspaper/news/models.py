@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.contrib.sites.models import Site
 
 
 # Create your models here.
@@ -75,6 +76,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_detail', args=[str(self.id)])
+
+    def get_full_absolute_url(self):
+        domain = Site.objects.get_current().domain
+        return 'http://%s%s' % (domain, self.get_absolute_url())
 
 
 class Comment(models.Model):

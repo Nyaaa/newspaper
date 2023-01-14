@@ -42,6 +42,7 @@
 <!-- Content -->
   <h1 class="text-center">All {{ page_title }}</h1>
   <div class="text-end">
+    <a class="btn btn-primary" href="{% url 'subscriptions' %}" role="button">Subscribe</a>
     <a class="btn btn-link disabled" role="button">Posts: {{ object_list|length }}</a>
   </div>
   {% if object_list %}

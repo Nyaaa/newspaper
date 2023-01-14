@@ -70,7 +70,6 @@ class SubscribeForm(forms.ModelForm):
 
         for cat in categories:
             subs = cat.subscribers.all()
-            print(subs)
             if cat in to_sub and user not in subs:
                 cat.subscribers.add(user)
             elif cat not in to_sub and user in subs:

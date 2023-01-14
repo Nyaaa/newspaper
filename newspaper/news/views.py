@@ -3,8 +3,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.db.models import Q
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
 from .models import Post, Author
 from .filters import PostFilter
 from .forms import PostForm
@@ -60,17 +58,7 @@ class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
         post.author = Author.objects.get(user=self.request.user)
         if path == '/articles/create/':
             post.type = Post.PostType.ARTICLE
-
-        html_content = render_to_string('new_post.html', {'post': post})
-        msg = EmailMultiAlternatives(
-            subject=f'{post.title}',
-            body=post.text,
-            from_email='starlite.v0@gmail.com',
-            to=['starlite.v0@gmail.com']
-        )
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
-
+        post.save()
         return super().form_valid(form)
 
 

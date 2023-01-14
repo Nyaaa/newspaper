@@ -44,12 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.flatpages',
     'django_filters',
     'widget_tweaks',
-    'news',
     'usr',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'news.apps.NewsConfig',
 ]
 
 SITE_ID = 1
@@ -169,7 +169,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'starlite.v0'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'starlite.v0@gmail.com'
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')

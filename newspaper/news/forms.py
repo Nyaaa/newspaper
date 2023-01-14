@@ -16,5 +16,5 @@ class PostForm(forms.ModelForm):
             raise ValidationError({
                 "text": "Text and title cannot be identical"
             })
-
         return cleaned_data
+
