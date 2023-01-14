@@ -167,3 +167,9 @@ SOCIALACCOUNT_PROVIDERS = {
         },
     }
 }
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'starlite.v0'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'starlite.v0@gmail.com'

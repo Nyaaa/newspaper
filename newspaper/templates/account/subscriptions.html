@@ -1,0 +1,22 @@
+{% extends "account/base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Manage subscriptions" %}{% endblock %}
+
+{% block content %}
+<form action="" method="post">
+  <h4>Your subscriptions:</h4>
+  {% csrf_token %}
+  <div class="form-group">
+    {% for field in form.name %}
+      <div class="form-check">
+        {{ field }}
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">
+      <span class="glyphicon glyphicon-ok"></span>Save
+    </button>
+  </div>
+</form>
+{% endblock content %}

@@ -3,6 +3,7 @@ from allauth.account.forms import SignupForm
 from allauth.socialaccount.forms import SignupForm as SSignupForm
 from django.contrib.auth.models import Group, User
 from news.templatetags.custom_filters import CENSOR_LIST
+from news.models import Category
 
 
 class BasicSignupForm(SignupForm):
@@ -32,7 +33,6 @@ class SocialSignupForm(SSignupForm):
 
 
 class NameChangeForm(forms.ModelForm):
-
     class Meta:
         model = User
         fields = ['first_name', 'last_name']
@@ -45,5 +45,35 @@ class NameChangeForm(forms.ModelForm):
                 self._errors[name] = self.error_class(['Name is not allowed'])
             elif len(dirty) > 15:
                 self._errors[name] = self.error_class(['Name is too long'])
+
+        return cleaned_data
+
+
+class SubscribeForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(SubscribeForm, self).__init__(*args, **kwargs)
+        self.fields['name'] = forms.ModelMultipleChoiceField(queryset=Category.objects.all(),
+                                                             widget=forms.CheckboxSelectMultiple,
+                                                             )
+        self.fields['name'].initial = Category.objects.filter(subscribers=self.user).values_list('id', flat=True)
+
+    class Meta:
+        model = Category
+        fields = ['name']
+
+    def clean(self):
+        user = self.user
+        cleaned_data = super().clean()
+        categories = Category.objects.all()
+        to_sub = cleaned_data['name']
+
+        for cat in categories:
+            subs = cat.subscribers.all()
+            print(subs)
+            if cat in to_sub and user not in subs:
+                cat.subscribers.add(user)
+            elif cat not in to_sub and user in subs:
+                cat.subscribers.remove(user)
 
         return cleaned_data

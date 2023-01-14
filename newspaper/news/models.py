@@ -28,8 +28,14 @@ class Author(models.Model):
         return f'{self.user.get_full_name() or self.user}'
 
 
+class CategoryUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+
+
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, through=CategoryUser)
 
     def __str__(self):
         return f'{self.name}'
