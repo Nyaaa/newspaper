@@ -63,10 +63,10 @@ class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        today = timezone.now().date()
+        today = timezone.now()
         author = Author.objects.get(user=self.request.user)
         post_num = Post.objects.filter(author=author,
-                                       created__range=[timezone.now() - timezone.timedelta(days=1), timezone.now()]
+                                       created__range=[today - timezone.timedelta(days=1), today]
                                        ).count()
         if post_num >= 3:
             context['can_post'] = False
