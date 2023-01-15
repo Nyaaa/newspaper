@@ -58,7 +58,6 @@ class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
         post.author = Author.objects.get(user=self.request.user)
         if path == '/articles/create/':
             post.type = Post.PostType.ARTICLE
-        post.save()
         return super().form_valid(form)
 
 

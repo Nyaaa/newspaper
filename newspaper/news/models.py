@@ -68,7 +68,7 @@ class Post(models.Model):
         self.rating -= 1
         self.save()
 
-    def preview(self):
+    def preview(self):  # TODO safe to delete
         return self.text[0:124] + '...'
 
     def __str__(self):
@@ -79,7 +79,7 @@ class Post(models.Model):
 
     def get_full_absolute_url(self):
         domain = Site.objects.get_current().domain
-        return 'http://%s%s' % (domain, self.get_absolute_url())
+        return f'{domain}{self.get_absolute_url()}'
 
 
 class Comment(models.Model):
