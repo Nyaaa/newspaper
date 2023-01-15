@@ -82,6 +82,11 @@ class PostUpdate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
     permission_required = ('news.change_post',)
     success_message = 'Post "%(title)s" was updated successfully'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['can_post'] = True
+        return context
+
 
 class PostDelete(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, DeleteView):
     model = Post

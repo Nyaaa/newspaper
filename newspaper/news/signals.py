@@ -11,7 +11,7 @@ def save_trigger(sender, instance, created, **kwargs):
     for cat in instance.category.all():
         emails = list(cat.subscribers.all().values_list('email', flat=True))
         if emails:
-            mails.append(*emails)
+            mails += emails
 
     if mails:
         html_content = render_to_string('email_broadcast.html', {'post': instance})
@@ -19,7 +19,7 @@ def save_trigger(sender, instance, created, **kwargs):
         msg = EmailMultiAlternatives(
             subject=subject,
             body=instance.text,
-            to=mails
+            to=set(mails)
         )
         msg.attach_alternative(html_content, "text/html")
         msg.send()
