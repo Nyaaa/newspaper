@@ -36,9 +36,17 @@
   {% endfor %}
   <br>
   <div class="form-group">
+    {% if can_post %}
     <button type="submit" class="btn btn-success">
       <span class="glyphicon glyphicon-ok"></span>Save
     </button>
+    {% else %}
+    <span class="d-inline-block" data-mdb-placement="top" data-mdb-toggle="popover" data-mdb-content="You have reached the limit of 3 posts per day">
+      <button type="submit" class="btn btn-danger" disabled>
+        <span class="glyphicon glyphicon-ok"></span>Save
+      </button>
+    </span>
+    {% endif %}
     <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-default">Cancel</a>
   </div>
 </form>

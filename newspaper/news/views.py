@@ -6,6 +6,7 @@ from django.db.models import Q
 from .models import Post, Author
 from .filters import PostFilter
 from .forms import PostForm
+from django.utils import timezone
 
 
 # Create your views here.
@@ -59,6 +60,19 @@ class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
         if path == '/articles/create/':
             post.type = Post.PostType.ARTICLE
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+        author = Author.objects.get(user=self.request.user)
+        post_num = Post.objects.filter(author=author,
+                                       created__range=[timezone.now() - timezone.timedelta(days=1), timezone.now()]
+                                       ).count()
+        if post_num >= 3:
+            context['can_post'] = False
+        else:
+            context['can_post'] = True
+        return context
 
 
 class PostUpdate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, UpdateView):
