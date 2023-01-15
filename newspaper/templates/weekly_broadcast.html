@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% for post in posts %}
+    <h2>{{ post.title }}</h2>
+    <p>{{ post.text|truncatewords:20 }}</p>
+    <a href="{{ post.get_full_absolute_url }}" style="">Visit Website</a>
+    {% endfor %}
+</body>
+</html>

@@ -75,7 +75,12 @@ class Post(models.Model):
         return f'{self.title.title()}'
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
+        if self.type == Post.PostType.ARTICLE:
+            cat = '/articles/'
+        else:
+            cat = '/news/'
+        return f'{cat}{self.pk}'
+        # return reverse('post_detail', args=[str(self.id)])
 
     def get_full_absolute_url(self):
         domain = Site.objects.get_current().domain
