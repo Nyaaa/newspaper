@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
         scheduler.add_job(
             my_job,
-            trigger=CronTrigger(second="*/10"),  # Every 10 minutes
+            trigger=CronTrigger(day_of_week="sun"),
             id="my_job",
             max_instances=1,
             replace_existing=True,

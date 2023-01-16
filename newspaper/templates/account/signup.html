@@ -6,34 +6,42 @@
 
 {% block content %}
 <h1 class="text-center">Sign up</h1>
-  <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  <form class="signup needs-validation" id="signup_form" method="post" action="{% url 'account_signup' %}" novalidate>
     {% csrf_token %}
 
     {% if form %}
-      <!-- Form Errors -->
-      {% if form.errors %}
-        <ul class="errors">
-          {% for error in form.errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-
       <!-- Display Form -->
       {% for field in form %}
-        <div class="form-outline mb-4">
-          {{ field|add_class:'form-control' }}
-          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
-        </div>
+        {% if field != form.sub_check %}
+          {% if form.is_bound %}
+            {% if field.errors %}
+              <div class="form-outline mb-5">
+                {% render_field field class="form-control is-invalid" %}
+                {% for error in field.errors %}
+                <div class="invalid-feedback">{{ error }}</div>
+              </div>
+              {% endfor %}
+            {% else %}
+              <div class="form-outline mb-4">
+                {% render_field field class="form-control is-valid" %}
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="form-outline mb-4">
+              {% render_field field class="form-control" %}
+              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+            </div>
+          {% endif %}
+        {% endif %}
       {% endfor %}
     {% endif %}
 
+
     <!-- Checkbox -->
     <div class="form-check d-flex justify-content-center mb-4">
-      <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-      <label class="form-check-label" for="form2Example33">
-        Subscribe to our newsletter
-      </label>
+      {{ form.sub_check|add_class:'form-check-input me-2' }}
+      <label class="form-check-label" for="id_sub_check">Subscribe to our weekly digest (actually works now!)</label>
     </div>
 
     <!-- Submit button -->

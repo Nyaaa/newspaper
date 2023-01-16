@@ -9,6 +9,7 @@ from news.models import Category
 class BasicSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First name')
     last_name = forms.CharField(max_length=30, label='Last name')
+    sub_check = forms.BooleanField(initial=True, required=False)
 
     def save(self, request):
         user = super(BasicSignupForm, self).save(request)
@@ -16,6 +17,9 @@ class BasicSignupForm(SignupForm):
         basic_group.user_set.add(user)
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
+        if self.cleaned_data['sub_check']:
+            for i in Category.objects.all():
+                i.subscribers.add(user)
         return user
 
 

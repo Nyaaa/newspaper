@@ -21,6 +21,7 @@
 
 {% block content %}
 <!-- Filter -->
+<!--FIXME filter in posts-->
 {% if 'search' not in request.path %}
   <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
     {% for field in filterset.form.visible_fields %}

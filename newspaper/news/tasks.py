@@ -1,7 +1,11 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from .models import Post, Category
+from .models import Post
 from django.utils import timezone
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 
 def my_job():
@@ -15,8 +19,8 @@ def my_job():
         for post in posts:
             if sub in post.category.values_list('subscribers__email', flat=True).distinct():
                 to_send.append(post)
-        print(sub)
-        print(to_send)
+        logger.info(sub)
+        logger.info(to_send)
 
         html_content = render_to_string('weekly_broadcast.html', {'posts': to_send})
         msg = EmailMultiAlternatives(
@@ -25,6 +29,3 @@ def my_job():
         )
         msg.attach_alternative(html_content, "text/html")
         msg.send()
-
-        print('done')
-
