@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    container_name: 'newspaper_redis'
+    command: redis-server
+    ports:
+      - '6379:6379'
+
+  web:
+    build: .
+    restart: unless-stopped
+    container_name: 'newspaper_django'
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - '8000:8000'
+
+  celery:
+    build: .
+    restart: unless-stopped
+    container_name: 'newspaper_celery'
+    environment:
+      - CELERY_BROKER=redis://redis:6379
+      - CELERY_RESULT_BACKEND=redis://redis:6379
+    command: celery -A newspaper worker -l INFO
+    depends_on:
+      - web
+      - redis

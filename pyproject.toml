@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "newspaper"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["Nyaaa <1457047+Nyaaa@users.noreply.github.com>"]
 readme = "README.md"
@@ -13,6 +13,7 @@ django-widget-tweaks = "^1.4.12"
 django-allauth = "^0.52.0"
 python-dotenv = "^0.21.0"
 django-apscheduler = "^0.6.2"
+celery = {extras = ["redis"], version = "^5.2.7"}
 
 
 [build-system]
