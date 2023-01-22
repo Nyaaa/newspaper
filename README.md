@@ -5,6 +5,8 @@ A generic news website project
 ### Stack
 * Django
 * Material Design Bootstrap 5 (plain JavaScript)
+* Celery
+* Redis
 
 ### Features
 * Post types (News/articles), expandable
@@ -13,3 +15,4 @@ A generic news website project
 * Allauth user management + social integrations
 * User access control
 * User profiles
+* E-mail notifications + newsletter

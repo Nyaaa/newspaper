@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    container_name: 'newspaper_redis'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - newspaper:/data
+
+  web:
+    build: .
+    restart: unless-stopped
+    container_name: 'newspaper_django'
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - '8000:8000'
+    environment:
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - newspaper:/app
+
+  celery:
+    build: .
+    restart: unless-stopped
+    container_name: 'newspaper_celery'
+    command: celery -A newspaper worker -l INFO -B
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - web
+      - redis
+    volumes:
+      - newspaper:/app
+
+volumes:
+  newspaper:

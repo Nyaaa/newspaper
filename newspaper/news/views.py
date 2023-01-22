@@ -7,6 +7,7 @@ from .models import Post, Author
 from .filters import PostFilter
 from .forms import PostForm
 from django.utils import timezone
+from .tasks import notification
 
 
 # Create your views here.
@@ -59,7 +60,9 @@ class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
         post.author = Author.objects.get(user=self.request.user)
         if path == '/articles/create/':
             post.type = Post.PostType.ARTICLE
-        return super().form_valid(form)
+        response = super().form_valid(form)
+        notification.delay(pk=form.instance.pk)  # Celery task, see tasks.py
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
