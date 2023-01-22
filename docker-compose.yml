@@ -8,6 +8,8 @@ services:
     command: redis-server
     ports:
       - '6379:6379'
+    volumes:
+      - newspaper:/data
 
   web:
     build: .
@@ -16,15 +18,23 @@ services:
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - '8000:8000'
+    environment:
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - newspaper:/app
 
   celery:
     build: .
     restart: unless-stopped
     container_name: 'newspaper_celery'
+    command: celery -A newspaper worker -l INFO -B
     environment:
-      - CELERY_BROKER=redis://redis:6379
-      - CELERY_RESULT_BACKEND=redis://redis:6379
-    command: celery -A newspaper worker -l INFO
+      - REDIS_URL=redis://redis:6379
     depends_on:
       - web
       - redis
+    volumes:
+      - newspaper:/app
+
+volumes:
+  newspaper:
