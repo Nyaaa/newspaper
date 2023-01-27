@@ -2,6 +2,7 @@
 <html lang="en">
 {% load static %}
 {% load account %}
+{% load cache %}
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -9,16 +10,19 @@
   <title>NyankoNews: {% block title %}{% endblock title %}</title>
   <!-- MDB icon -->
   <link rel="icon" href="{% static 'img/favicon.ico' %}" type="image/x-icon" />
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <!-- Google Fonts Roboto -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  {% cache 36000 fonts %}
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" />
+  {% endcache %}
   <!-- MDB -->
   <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}" />
 </head>
 
 <body>
   <!-- Start your project here-->
+  {% cache 3600 navbar %}
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- Container wrapper -->
@@ -62,7 +66,7 @@
         <!-- Left links -->
       </div>
       <!-- Collapsible wrapper -->
-
+      {% endcache %}
       <!-- Right elements -->
       <!-- Search -->
       <form class="d-flex input-group w-auto" action="{% url 'search' %}" method="get">
@@ -154,11 +158,6 @@
       {% block body %}
       {% block content %}
         {{ flatpage.content }}
-        <!-- Jumbotron -->
-        <div class="p-5 text-center bg-image">
-          <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="logo" />
-        </div>
-        <!-- Jumbotron -->
       {% endblock content %}
       {% endblock body %}
     </div>
@@ -166,6 +165,8 @@
     </div>
   </div>
   </div>
+  <br>
+  {% cache 3600 footer %}
   <!-- Footer -->
   <footer class="bg-light text-center text-white">
     <!-- Grid container -->
@@ -220,7 +221,7 @@
         <a
           class="btn text-white btn-floating m-1"
           style="background-color: #333333;"
-          href="#!"
+          href="https://github.com/Nyaaa"
           role="button"
           ><i class="fab fa-github"></i
         ></a>
@@ -237,6 +238,7 @@
     <!-- Copyright -->
   </footer>
   <!-- Footer -->
+  {% endcache %}
   <!-- End your project here-->
 
   <!-- MDB -->

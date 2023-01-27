@@ -1,0 +1,33 @@
+{% extends 'flatpages/default.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<!-- Jumbotron -->
+<div class="p-5 text-center bg-image">
+  <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="logo" />
+</div>
+<!-- Jumbotron -->
+<h1 class="text-center">Top posts</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for post in top_posts %}
+  <div class="col">
+    <div class="card h-100">
+      <img src="http://placekitten.com/200/200" class="card-img-top" alt="placekitten"/>
+      <div class="card-body">
+        <a  class="nav-link" href="{{ post.get_absolute_url }}">
+          <h5 class="card-title">{{ post.title|censor }}</h5>
+          <p class="card-text">{{ post.text|truncatewords:15|censor }}</p>
+        </a>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">Rating: {{ post.rating }}</small>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.contrib.sites.models import Site
+from django.core.cache import cache
 
 
 # Create your models here.
@@ -68,9 +69,6 @@ class Post(models.Model):
         self.rating -= 1
         self.save()
 
-    def preview(self):  # TODO safe to delete
-        return self.text[0:124] + '...'
-
     def __str__(self):
         return f'{self.title.title()}'
 
@@ -85,6 +83,10 @@ class Post(models.Model):
     def get_full_absolute_url(self):
         domain = Site.objects.get_current().domain
         return f'{domain}{self.get_absolute_url()}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        cache.delete(f'post-{self.pk}')
 
 
 class Comment(models.Model):

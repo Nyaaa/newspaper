@@ -16,3 +16,4 @@ A generic news website project
 * User access control
 * User profiles
 * E-mail notifications + newsletter
+* Redis caching

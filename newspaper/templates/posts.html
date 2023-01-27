@@ -23,6 +23,7 @@
 <!-- Filter -->
 <!--FIXME filter in posts-->
 {% if 'search' not in request.path %}
+<div class="collapse mt-3" id="collapseExample">
   <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
     {% for field in filterset.form.visible_fields %}
       <div>
@@ -38,12 +39,16 @@
     </div>
   </form>
   <hr>
+</div>
 {% endif %}
 <!-- Filter -->
 <!-- Content -->
   <h1 class="text-center">All {{ page_title }}</h1>
   <div class="text-end">
-    <a class="btn btn-primary" href="{% url 'subscriptions' %}" role="button">Subscribe</a>
+    <a class="btn btn-outline-primary" href="{% url 'subscriptions' %}" role="button">Subscribe</a>
+    {% if 'search' not in request.path %}
+    <a class="btn btn-outline-primary" data-mdb-toggle="collapse" href="#collapseExample" role="button">Filter</a>
+    {% endif %}
     <a class="btn btn-link disabled" role="button">Posts: {{ object_list|length }}</a>
   </div>
   {% if object_list %}
