@@ -2,27 +2,36 @@
 {% load widget_tweaks %}
 {% load i18n %}
 
-{% block head_title %}{% trans "Edit name" %}{% endblock %}
+{% block head_title %}{% trans "Change name" %}{% endblock %}
 
 {% block content %}
-<!--TODO change form, see signup form-->
 <form action="" method="post">
   <h4>Change name:</h4>
   {% csrf_token %}
   <div class="form-group">
-    {% for field in form.visible_fields %}
-      <div class="form-outline">
-        <input type="text" name="{{ field.name }}" value="{{ field.value }}" id="{{ field.id_for_label }}" class="form-control" />
-        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-        {% for error in field.errors %}
-        <span class="help-block">{{ error }}</span>
-        {% endfor %}
-      </div>
-    <br>
+    {% for field in form %}
+      {% if form.is_bound %}
+        {% if field.errors %}
+          <div class="form-outline mb-5">
+            {% render_field field class="form-control is-invalid" %}
+            {% for error in field.errors %}
+            <div class="invalid-feedback">{{ error }}</div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <div class="form-outline mb-4">
+            {% render_field field class="form-control is-valid" %}
+            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="form-outline mb-4">
+          {% render_field field class="form-control" %}
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+        </div>
+      {% endif %}
     {% endfor %}
-    <button type="submit" class="btn btn-success">
-      <span class="glyphicon glyphicon-ok"></span>Save
-    </button>
+    <button type="submit" class="btn btn-success">Save</button>
   </div>
 </form>
 {% endblock content %}
