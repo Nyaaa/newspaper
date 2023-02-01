@@ -4,7 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.cache import cache
 from django.urls import reverse_lazy
 from django.db.models import Q
-from .models import Post, Author
+from .models import Post, Author, Comment
 from .filters import PostFilter
 from .forms import PostForm
 from django.utils import timezone
@@ -26,6 +26,7 @@ class PostList(ListView):
             queryset = queryset.filter(type=Post.PostType.ARTICLE)
         else:
             queryset = queryset.filter(type=Post.PostType.NEWS)
+
         self.filterset = PostFilter(self.request.GET, queryset)
         return self.filterset.qs
 
@@ -52,8 +53,12 @@ class PostDetail(DetailView):
         if not obj:
             obj = super().get_object(queryset=self.queryset)
             cache.set(f'post-{self.kwargs["pk"]}', obj)
-
         return obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.get_object())
+        return context
 
 
 class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, CreateView):
