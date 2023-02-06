@@ -82,7 +82,9 @@
                   <div class="col-md-6 text-end">
                     <p class="card-text"><small class="text-muted">{{ post.author }}</small></p>
                     {% for category in post.category.all %}
-                    <span class="badge rounded-pill bg-secondary">{{ category }}</span>
+                    <a href="?{% url_replace category=category.id %}">
+                      <span class="badge rounded-pill bg-secondary">{{ category }}</span>
+                    </a>
                     {% endfor %}
                   </div>
                 </div>
