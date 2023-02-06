@@ -1,7 +1,6 @@
 from django import template
 import re
 
-
 register = template.Library()
 
 CENSOR_LIST = ['profanity_test', 'ass']
@@ -22,10 +21,10 @@ def censor(text: str) -> str:
 
 @register.simple_tag(takes_context=True)
 def url_replace(context, **kwargs):
-   d = context['request'].GET.copy()
-   for k, v in kwargs.items():
-       d[k] = v
-   return d.urlencode()
+    _dict = context['request'].GET.copy()
+    for key, value in kwargs.items():
+        _dict[key] = value
+    return _dict.urlencode()
 
 
 @register.filter(name='in_group')
