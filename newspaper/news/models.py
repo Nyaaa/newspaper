@@ -42,6 +42,9 @@ class Category(models.Model):
     def __str__(self):
         return f'{self.name}'
 
+    class Meta:
+        verbose_name_plural = "categories"
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
@@ -95,6 +98,9 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     text = models.TextField()
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'[{self.post}] - {self.text}'
 
     def like(self):
         self.rating += 1

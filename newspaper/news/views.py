@@ -1,23 +1,25 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, FormView
+from django_filters.views import FilterView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.cache import cache
 from django.urls import reverse_lazy
-from django.db.models import Q
+from django.db.models import Q, Count
 from .models import Post, Author, Comment
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.utils import timezone
 from .tasks import notification
 
 
 # Create your views here.
-class PostList(ListView):
+class PostList(FilterView):
     model = Post
     ordering = '-created'
     template_name = 'posts.html'
     context_object_name = 'posts'
     paginate_by = 10
+    filterset_class = PostFilter
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -27,12 +29,11 @@ class PostList(ListView):
         else:
             queryset = queryset.filter(type=Post.PostType.NEWS)
 
-        self.filterset = PostFilter(self.request.GET, queryset)
-        return self.filterset.qs
+        queryset = queryset.annotate(comments_amount=Count('comment__post__id'))
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filterset'] = self.filterset
         path = self.request.META.get('PATH_INFO')
         if path == '/articles/':
             context['page_title'] = 'articles'
@@ -43,10 +44,11 @@ class PostList(ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetail(DetailView, FormView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+    form_class = CommentForm
 
     def get_object(self, *args, **kwargs):
         obj = cache.get(f'post-{self.kwargs["pk"]}', None)
@@ -55,10 +57,21 @@ class PostDetail(DetailView):
             cache.set(f'post-{self.kwargs["pk"]}', obj)
         return obj
 
+    def get_success_url(self):
+        return reverse_lazy('post_detail', args=[self.get_object().pk])
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comments'] = Comment.objects.filter(post=self.get_object())
         return context
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.user = self.request.user
+        comment.post = self.get_object()
+        comment.save()
+        comment.post.author.update_rating()
+        return super().form_valid(form)
 
 
 class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixin, CreateView):

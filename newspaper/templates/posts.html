@@ -21,11 +21,10 @@
 
 {% block content %}
 <!-- Filter -->
-<!--FIXME filter in posts-->
 {% if 'search' not in request.path %}
 <div class="collapse mt-3" id="collapseExample">
   <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
-    {% for field in filterset.form.visible_fields %}
+    {% for field in filter.form.visible_fields %}
       <div>
         <label for="{{ field.id_for_label }}" class="">{{ field.label }}</label>
         {{ field|add_class:'form-control' }}
@@ -49,7 +48,7 @@
     {% if 'search' not in request.path %}
     <a class="btn btn-outline-primary" data-mdb-toggle="collapse" href="#collapseExample" role="button">Filter</a>
     {% endif %}
-    <a class="btn btn-link disabled" role="button">Posts: {{ object_list|length }}</a>
+    <a class="btn btn-link disabled" role="button">Posts: {{ page_obj.paginator.count }}</a>
   </div>
   {% if object_list %}
     {% for post in object_list %}
@@ -64,7 +63,7 @@
           </div>
           <div class="col-md-8">
             <div class="card-body">
-              <a href="{% if post.get_type_display == 'News' %}/news/{% else %}/articles/{% endif %}{{ post.pk }}">
+              <a href="{{ post.get_absolute_url }}">
                 <h5 class="card-title">{{ post.title|censor }}</h5>
               </a>
               <p class="card-text">{{ post.text|truncatewords:20|censor }}</p>
@@ -73,18 +72,16 @@
                     <p class="card-text">
                     <small class="text-muted">{{ post.created|date:'d M Y' }}</small>
                     </p>
-                    {% if post.get_type_display == 'News' %}
-                      <span class="badge rounded-pill badge-success">{{ post.get_type_display }}</span>
-                    {% else %}
-                      <span class="badge rounded-pill badge-warning">{{ post.get_type_display }}</span>
-                    {% endif %}
+                    <a href="{{ post.get_absolute_url }}#comments">
+                      <span class="badge rounded-pill badge-light">
+                        <i class="far fa-comment-alt"></i> {{ post.comments_amount }}
+                      </span>
+                    </a>
                   </div>
                   <div class="col-md-6 text-end">
                     <p class="card-text"><small class="text-muted">{{ post.author }}</small></p>
                     {% for category in post.category.all %}
-                    <a href="?{% url_replace category=category.id %}">
-                      <span class="badge rounded-pill bg-secondary">{{ category }}</span>
-                    </a>
+                    <a href="?{% url_replace category=category.pk %}"><span class="badge rounded-pill bg-secondary">{{ category }}</span></a>
                     {% endfor %}
                   </div>
                 </div>
