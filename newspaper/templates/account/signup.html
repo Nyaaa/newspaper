@@ -24,13 +24,13 @@
             {% else %}
               <div class="form-outline mb-4">
                 {% render_field field class="form-control is-valid" %}
-                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+                {{ field|add_label_class:"form-label" }}
               </div>
             {% endif %}
           {% else %}
             <div class="form-outline mb-4">
               {% render_field field class="form-control" %}
-              <label class="form-label" for="{{ field.id_for_label }}">{{ field.label_tag }}</label>
+              {{ field|add_label_class:"form-label" }}
             </div>
           {% endif %}
         {% endif %}
@@ -41,7 +41,7 @@
     <!-- Checkbox -->
     <div class="form-check d-flex justify-content-center mb-4">
       {{ form.sub_check|add_class:'form-check-input me-2' }}
-      <label class="form-check-label" for="id_sub_check">Subscribe to our weekly digest</label>
+      {{ form.sub_check|add_label_class:"form-check-label" }}
     </div>
 
     <!-- Submit button -->

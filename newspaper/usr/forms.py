@@ -9,7 +9,7 @@ from news.models import Category
 class BasicSignupForm(SignupForm):
     first_name = forms.CharField(max_length=30, label='First name')
     last_name = forms.CharField(max_length=30, label='Last name')
-    sub_check = forms.BooleanField(initial=True, required=False)
+    sub_check = forms.BooleanField(initial=True, required=False, label='Subscribe to our weekly digest')
 
     def save(self, request):
         user = super(BasicSignupForm, self).save(request)

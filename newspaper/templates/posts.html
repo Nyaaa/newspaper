@@ -26,16 +26,15 @@
   <form class="row row-cols-lg-auto g-3 align-items-end justify-content-center" action="" method="get">
     {% for field in filter.form.visible_fields %}
       <div>
-        <label for="{{ field.id_for_label }}" class="">{{ field.label }}</label>
+        {{ field.label_tag }}
         {{ field|add_class:'form-control' }}
         {% for error in field.errors %}
         <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     {% endfor %}
-    <div>
-      <button class="btn btn-outline-primary" type="submit" name="button">Filter</button>
-    </div>
+    <div><button class="btn btn-primary" type="submit" name="button">Filter</button></div>
+    <a href="{% url request.resolver_match.view_name %}" class="btn btn-secondary">Clear filters</a>
   </form>
   <hr>
 </div>

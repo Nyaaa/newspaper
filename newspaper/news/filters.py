@@ -1,14 +1,16 @@
-import django_filters
+from django_filters import CharFilter, FilterSet, ModelChoiceFilter, DateFilter
 from django import forms
 from .models import Post, Author, Category
+from django_filters.widgets import RangeWidget
 
 
-class PostFilter(django_filters.FilterSet):
-    title = django_filters.CharFilter(field_name='title', lookup_expr='icontains')
-    created = django_filters.DateFilter(field_name='created', lookup_expr='gt', widget=forms.DateInput(attrs={'type': 'date'}))  # TODO change to range
-    author = django_filters.ModelChoiceFilter(field_name='author', empty_label='All authors', lookup_expr='exact', queryset=Author.objects.all())
-    category = django_filters.ModelChoiceFilter(field_name='category', empty_label='All categories', queryset=Category.objects.all())
+class PostFilter(FilterSet):
+    title = CharFilter(field_name='title', lookup_expr='icontains')
+    created_from = DateFilter(field_name='created', lookup_expr='gt', widget=forms.DateInput(attrs={'type': 'date'}))
+    created_to = DateFilter(field_name='created', lookup_expr='lt', widget=forms.DateInput(attrs={'type': 'date'}))
+    author = ModelChoiceFilter(field_name='author', empty_label='All authors', lookup_expr='exact', queryset=Author.objects.all())
+    category = ModelChoiceFilter(field_name='category', empty_label='All categories', queryset=Category.objects.all())
 
     class Meta:
         model = Post
-        fields = ['title', 'author', 'created', 'category']
+        fields = ['created_from', 'created_to', 'title', 'author', 'category']

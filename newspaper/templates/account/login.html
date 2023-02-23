@@ -28,13 +28,13 @@
     <!-- Email input -->
     <div class="form-outline mb-4">
       {{ form.login|add_class:'form-control' }}
-      <label class="form-label" for="{{ form.login.id_for_label }}">{{ form.login.label_tag }}</label>
+      {{ form.login|add_label_class:"form-label" }}
     </div>
 
     <!-- Password input -->
     <div class="form-outline mb-4">
       {{ form.password|add_class:'form-control' }}
-      <label class="form-label" for="{{ form.password.id_for_label }}">{{ form.password.label_tag }}</label>
+      {{ form.password|add_label_class:"form-label" }}
     </div>
 
     <!-- 2 column grid layout for inline styling -->
