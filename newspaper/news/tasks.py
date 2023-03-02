@@ -1,6 +1,6 @@
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from .models import Post
+from .models import Post, Author
 from django.utils import timezone
 import logging
 from celery import shared_task
@@ -50,3 +50,11 @@ def notification(pk):
         )
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
+
+@shared_task
+def update_authors_rating():
+    authors = Author.objects.all()
+    for author in authors:
+        author.update_rating()
+

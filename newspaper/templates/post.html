@@ -9,19 +9,21 @@
 {% endblock breadcrumbs %}
 
 {% block content %}
-<h1 class="text-center">{{ post.title|censor }}</h1>
+<h1 class="text-center mt-2">{{ post.title|censor }}</h1>
 <div>
   {% for category in post.category.all %}
-  <span class="badge rounded-pill bg-secondary">{{ category }}</span>
+  <span class="badge rounded-pill bg-secondary mb-2">{{ category }}</span>
   {% endfor %}
 </div>
 <p>{{ post.text|censor }}</p>
 <div class="row">
   <div class="col d-flex justify-content-start"><small class="text-muted">Posted by {{ post.author }} on {{ post.created|date:'d M Y' }}</small></div>
   <div class="col d-flex justify-content-end">
-    <a href="#" class="text-danger"><i class="fas fa-arrow-circle-down"></i></a>
-     {{ post.rating }}
-    <a href="#" class="text-success"><i class="fas fa-arrow-circle-up"></i></a>
+      <a href="#" data-model="post" data-id="{{ post.id }}" data-value=1 class="text-success like-button">
+        <i class="fas fa-arrow-circle-up"></i></a>
+      <div id="post{{ post.id }}" class="mx-1">{{ post.votes.sum_rating }}</div>
+      <a href="#" data-model="post" data-id="{{ post.id }}" data-value=-1 class="text-danger like-button">
+        <i class="fas fa-arrow-circle-down"></i></a>
   </div>
 </div>
 <br>
@@ -30,6 +32,7 @@
   <div class="col-md-8">
     <p id="comments">Comments:</p>
     {% if comments %}
+    <!-- Comments -->
     {% for comment in comments %}
     <div  class="card border border-dark mb-3">
       <div class="card-header text-muted">{{ comment.user }}</div>
@@ -40,14 +43,17 @@
         <div class="row">
           <div class="col d-flex justify-content-start">{{ comment.created }}</div>
           <div class="col d-flex justify-content-end">
-            <a href="#" class="text-danger"><i class="fas fa-arrow-circle-down"></i></a>
-            {{ comment.rating }}
-            <a href="#" class="text-success"><i class="fas fa-arrow-circle-up"></i></a>
+              <a href="#" data-model="comment" data-id="{{ comment.id }}" data-value=1 class="text-success like-button">
+                <i class="fas fa-arrow-circle-up"></i></a>
+              <div id="comment{{ comment.id }}" class="mx-1">{{ comment.votes.sum_rating }}</div>
+              <a href="#" data-model="comment" data-id="{{ comment.id }}" data-value=-1 class="text-danger like-button">
+                <i class="fas fa-arrow-circle-down"></i></a>
           </div>
         </div>
       </div>
     </div>
     {% endfor %}
+    <!-- Comments -->
     {% else %}
     <p>None yet!</p>
     {% endif %}
@@ -57,7 +63,7 @@
         {% csrf_token %}
         {{ form.text }}
         <div class="col-xl-12"></div>
-        <button type="submit" class="btn btn-primary">Post</button>
+        <button type="submit" class="btn btn-primary mt-3">Post</button>
       </form>
     {% endif %}
   </div>
@@ -80,4 +86,38 @@
   </div>
   <!-- Edit button -->
 {% endif %}
+
+
 {% endblock content %}
+
+{% block scripts %}
+<script>
+$(document).ready(function(){
+  $(document).on('click', '.like-button', function(event){
+    event.preventDefault();
+    var pk = $(this).attr('data-id');
+    var vote = $(this).attr('data-value');
+    var model = $(this).attr('data-model');
+    $.ajax({
+      type: 'POST',
+      url: '{% url "likes" %}',
+      data: {
+            'vote': vote,
+            'post_id': pk,
+            'model': model,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(json){
+              $( "#" + model + pk ).text(json.sum_rating);
+            },
+            error: function(rs, e){
+              console.log(rs.responseText);
+              if (rs.status == 401) {
+                  location.href="{% url "account_login" %}";
+              }
+            },
+          });
+     });
+})
+</script>
+{% endblock scripts %}

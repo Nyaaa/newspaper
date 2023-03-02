@@ -1,15 +1,19 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, FormView
+from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, FormView, View
 from django_filters.views import FilterView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.cache import cache
 from django.urls import reverse_lazy
-from django.db.models import Q, Count
-from .models import Post, Author, Comment
+from django.db.models import Q, Count, Sum
+from .models import Post, Author, Comment, Like
 from .filters import PostFilter
 from .forms import PostForm, CommentForm
 from django.utils import timezone
 from .tasks import notification
+from django.contrib.contenttypes.models import ContentType
+from django.http import JsonResponse
+from django.apps import apps
 
 
 # Create your views here.
@@ -149,5 +153,37 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['top_posts'] = Post.objects.all().order_by('-rating')[0:3]
+        context['top_posts'] = Post.objects.all().annotate(rating=Sum('votes__vote')).order_by('-rating')[0:3]
+        context['top_comments'] = Comment.objects.all().annotate(rating=Sum('votes__vote')).order_by('-rating')[0:3]
+        context['top_authors'] = Author.objects.all().order_by('-_rating')[0:3]
         return context
+
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
+class VotesView(LoginRequiredMixin, View):
+    @staticmethod
+    def post(request):
+        vote = int(request.POST.get('vote'))  # NOSONAR python:S1845
+        model = apps.get_model('news', request.POST.get('model'))
+        obj = get_object_or_404(model, id=request.POST.get('post_id'))
+        try:
+            like = Like.objects.get(content_type=ContentType.objects.get_for_model(obj),
+                                    object_id=obj.id, user=request.user)
+        except Like.DoesNotExist:
+            obj.votes.create(user=request.user, vote=vote)
+        else:
+            if like.vote != vote:
+                like.vote = vote
+                like.save(update_fields=['vote'])
+            else:
+                like.delete()
+
+        return JsonResponse({'sum_rating': obj.votes.sum_rating()})
+
+    def handle_no_permission(self):
+        if not is_ajax(request=self.request):
+            return super().handle_no_permission()
+        return JsonResponse(status=401, data={'message': 'Login required'})

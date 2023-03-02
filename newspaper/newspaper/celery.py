@@ -14,4 +14,8 @@ app.conf.beat_schedule = {
         'task': 'news.tasks.broadcast',
         'schedule': crontab(hour=8, minute=0, day_of_week='monday'),
     },
+    'update_ratings': {
+        'task': 'news.tasks.update_authors_rating',
+        'schedule': crontab(minute=0, hour=0),
+    },
 }

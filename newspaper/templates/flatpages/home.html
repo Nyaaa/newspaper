@@ -11,8 +11,9 @@
   <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="logo" />
 </div>
 <!-- Jumbotron -->
-<h1 class="text-center">Top posts</h1>
-<div class="row row-cols-1 row-cols-md-3 g-4">
+<!-- Top posts -->
+<h1 class="text-center mt-3">Top posts</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-6">
   {% for post in top_posts %}
   <div class="col">
     <div class="card h-100">
@@ -23,11 +24,61 @@
           <p class="card-text">{{ post.text|truncatewords:15|censor }}</p>
         </a>
       </div>
-      <div class="card-footer">
-        <small class="text-muted">Rating: {{ post.rating }}</small>
+      <div class="card-footer text-muted">
+        <div class="row">
+          <div class="col d-flex justify-content-start">{{ post.author.short_name }}</div>
+          <div class="col d-flex justify-content-end">Rating: {{ post.votes.sum_rating }}</div>
+        </div>
       </div>
     </div>
   </div>
   {% endfor %}
 </div>
+<!-- Top posts -->
+<!--Top comments-->
+<h1 class="text-center mt-3">Top comments</h1>
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-6">
+  {% for comment in top_comments %}
+  <div class="col">
+    <div class="card h-100">
+      <div class="card-header"><a href="{{ comment.post.get_absolute_url }}">{{ comment.post }}</a></div>
+      <div class="card-body">
+        <p class="card-text">{{ comment.text|truncatewords:15|censor }}</p>
+      </div>
+      <div class="card-footer text-muted">
+        <div class="row">
+          <div class="col d-flex justify-content-start">{{ comment.user }}</div>
+          <div class="col d-flex justify-content-end">Rating: {{ comment.votes.sum_rating }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<!--Top comments-->
+<!--Top authors-->
+<h1 class="text-center mt-3">Top authors</h1>
+<div class="d-flex justify-content-center">
+  <div class="col-auto">
+    <table aria-describedby="top authors" class="table">
+      <thead>
+      <tr>
+        <td>#</td>
+        <td>Name</td>
+        <td>Rating</td>
+      </tr>
+      </thead>
+      <tbody>
+      {% for author in top_authors %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ author }}</td>
+        <td>{{ author.rating }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--Top authors-->
 {% endblock content %}

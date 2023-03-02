@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.decorators.cache import cache_page
-from news.views import HomeView
+from news.views import HomeView, VotesView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,5 @@ urlpatterns = [
     path('articles/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
     path('usr/', include('usr.urls')),
+    path('like/', VotesView.as_view(), name='likes'),
 ]

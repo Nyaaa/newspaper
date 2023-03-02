@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .forms import NameChangeForm, SubscribeForm
-from news.models import Category, CategoryUser
+from news.models import Category
 from django.contrib.auth.models import Group, User
 from django.urls import reverse_lazy
 from news.models import Author

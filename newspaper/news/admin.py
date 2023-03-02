@@ -12,8 +12,14 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('text', 'post', 'created', 'user')
 
 
+def update_rating(modeladmin, request, queryset):
+    for author in queryset:
+        author.update_rating()
+
+
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'rating')
+    actions = [update_rating]
 
     def name(self, obj):
         return obj.user.get_full_name()

@@ -17,3 +17,5 @@ A generic news website project
 * User profiles
 * E-mail notifications + newsletter
 * Redis caching
+* AJAX-based like/dislike system
+* Post, comment & user ratings; updated nightly
