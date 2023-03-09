@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-(+=hn-=5#53&1-$4v-1tsxo1t3-5by1_@3a*!%jy02&riq1##0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -194,34 +194,25 @@ CELERY_RESULT_SERIALIZER = 'json'
 #     }
 # }
 
+ADMINS = [
+    ('admin', os.getenv('DEFAULT_FROM_EMAIL')),
+]
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'style': '{',
     'formatters': {
-        'simple': {
-            'format': '%(asctime)s %(levelname)-8s %(message)s'
-        },
-        'path': {
-            'format': '%(pathname)s'
-        },
-        'stack': {
-            'format': '%(exc_info)s'
-        },
-        'general': {
-            'format': '%(asctime)s %(levelname)-8s %(module)-8s %(message)s'
-        },
-        'errors': {
-            'format': '%(asctime)s %(levelname)-8s %(message)s %(pathname)s %(exc_info)s'
-        },
+        'simple': {'format': '%(asctime)-20s | %(levelname)-8s | %(message)s'},
+        'path': {'format': '%(pathname)s'},
+        'stack': {'format': '%(exc_info)s'},
+        'general': {'format': '%(asctime)-20s | %(levelname)-8s | %(module)s | %(message)s'},
+        'errors': {'format': '%(asctime)-20s | %(levelname)-8s | %(message)s | %(pathname)s | %(exc_info)s'},
+        'mail': {'format': '%(asctime)-20s | %(levelname)-8s | %(message)s | %(pathname)s'},
     },
     'filters': {
-        'require_debug_true': {
-            '()': 'django.utils.log.RequireDebugTrue',
-        },
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse',
-        },
+        'require_debug_true': {'()': 'django.utils.log.RequireDebugTrue'},
+        'require_debug_false': {'()': 'django.utils.log.RequireDebugFalse'},
     },
     'handlers': {
         'console-simple': {
@@ -246,18 +237,18 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filters': ['require_debug_false'],
-            'filename': os.path.join(BASE_DIR, 'general.log'),
+            'filename': 'general.log',
             'formatter': 'general'
         },
         'file-errors': {
             'level': 'ERROR',
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'errors.log'),
+            'filename': 'errors.log',
             'formatter': 'errors'
         },
         'file-security': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'security.log'),
+            'filename': 'security.log',
             'formatter': 'general'
         },
         'mail_admins': {
@@ -265,28 +256,30 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['require_debug_false'],
             'include_html': True,
-            'formatter': 'errors'
+            'formatter': 'mail'
         },
     },
     'loggers': {
         '': {
-            'handlers': ['console-simple'],
+            'handlers': ['console-simple', 'console-path', 'console-stack'],
             'level': 'DEBUG',
             'propagate': False
         },
         'django': {
             'handlers': ['console-simple', 'console-path', 'console-stack', 'file-general'],
-            'level': 'DEBUG',
+            'propagate': False
+        },
+        'django.template, django.db.backends': {
+            'handlers': ['file-errors'],
             'propagate': True
         },
-        'django.request, django.server, django.template, django.db.backends': {
-            'handlers': ['file-errors'],
-            'level': 'ERROR',
-            'propagate': False
+        'django.request, django.server': {
+            'handlers': ['file-errors', 'mail_admins'],
+            'propagate': True
         },
         'django.security': {
             'handlers': ['file-security'],
-            'propagate': False
+            'propagate': True
         },
     }
 }
