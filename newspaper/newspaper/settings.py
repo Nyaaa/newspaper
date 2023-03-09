@@ -193,3 +193,100 @@ CELERY_RESULT_SERIALIZER = 'json'
 #         }
 #     }
 # }
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'style': '{',
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)-8s %(message)s'
+        },
+        'path': {
+            'format': '%(pathname)s'
+        },
+        'stack': {
+            'format': '%(exc_info)s'
+        },
+        'general': {
+            'format': '%(asctime)s %(levelname)-8s %(module)-8s %(message)s'
+        },
+        'errors': {
+            'format': '%(asctime)s %(levelname)-8s %(message)s %(pathname)s %(exc_info)s'
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console-simple': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'simple'
+        },
+        'console-path': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'path'
+        },
+        'console-stack': {
+            'level': 'ERROR',
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+            'formatter': 'stack'
+        },
+        'file-general': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filters': ['require_debug_false'],
+            'filename': os.path.join(BASE_DIR, 'general.log'),
+            'formatter': 'general'
+        },
+        'file-errors': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'errors.log'),
+            'formatter': 'errors'
+        },
+        'file-security': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'security.log'),
+            'formatter': 'general'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['require_debug_false'],
+            'include_html': True,
+            'formatter': 'errors'
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console-simple'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+        'django': {
+            'handlers': ['console-simple', 'console-path', 'console-stack', 'file-general'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+        'django.request, django.server, django.template, django.db.backends': {
+            'handlers': ['file-errors'],
+            'level': 'ERROR',
+            'propagate': False
+        },
+        'django.security': {
+            'handlers': ['file-security'],
+            'propagate': False
+        },
+    }
+}
