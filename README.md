@@ -19,3 +19,4 @@ A generic news website project
 * Redis caching
 * AJAX-based like/dislike system
 * Post, comment & user ratings; updated nightly
+* i18n support

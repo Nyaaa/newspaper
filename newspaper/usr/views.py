@@ -8,6 +8,8 @@ from django.contrib.auth.models import Group, User
 from django.urls import reverse_lazy
 from news.models import Author
 from django.contrib import messages
+from django.utils import timezone
+import pytz
 
 
 # Create your views here.
@@ -17,7 +19,14 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_author'] = self.request.user.groups.filter(name='authors').exists()
+        context['current_time'] = timezone.now()
+        context['timezones'] = pytz.common_timezones
         return context
+
+    @staticmethod
+    def post(request):
+        request.session['django_timezone'] = request.POST['timezone']  # NOSONAR python:S1845
+        return redirect(reverse_lazy('profile'))
 
 
 class NameEditView(LoginRequiredMixin, UpdateView):

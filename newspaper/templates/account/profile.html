@@ -2,23 +2,50 @@
 {% load account socialaccount %}
 {% load widget_tweaks %}
 {% load i18n %}
+{% load tz %}
 
 {% block content %}
+{% get_current_timezone as TIME_ZONE %}
 <h1>{% trans "Hello" %}, {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user }}{% endif %}!</h1>
-<ul>
-  <li><a href="{% url 'name_edit' %}">{% trans "Change your name" %}</a></li>
-  <li><a href="{% url 'subscriptions' %}">{% trans "Manage your subscriptions" %}</a></li>
-  <li><a href="{% url 'account_email' %}">{% trans "Manage your email" %}</a></li>
-  <li><a href="{% url 'account_change_password' %}">{% trans "Change your password" %}</a></li>
-  <li><a href="{% url 'socialaccount_connections' %}">{% trans "Manage account connections" %}</a></li>
-</ul>
-{% if not is_author %}
-  <a class="btn text-white" style="background-color: #3b5998;" href="{% url 'upgrade' %}" role="button">
+
+<div class="btn-group-vertical gap-1" role="group">
+  <a class="btn btn-secondary disabled" role="button">
+    {{ current_time|timezone:TIME_ZONE }}
+  </a>
+  <a class="btn btn-light disabled" role="button">
+    {% trans "Set time zone" %}:
+  </a>
+  <form action="" method="POST">
+    {% csrf_token %}
+      <select class="custom-select" name="timezone" id="timezone">
+        {% for tz in timezones %}
+        <option value="{{ tz }}" {% if tz == TIME_ZONE %}selected{% endif %}>{{ tz }}</option>
+        {% endfor %}
+      </select>
+  </form>
+  <a class="btn btn-link" href="{% url 'name_edit' %}" role="button">
+    {% trans "Change your name" %}
+  </a>
+  <a class="btn btn-link" href="{% url 'subscriptions' %}" role="button">
+    {% trans "Manage your subscriptions" %}
+  </a>
+  <a class="btn btn-link" href="{% url 'account_email' %}" role="button">
+    {% trans "Manage your email" %}
+  </a>
+  <a class="btn btn-link" href="{% url 'account_change_password' %}" role="button">
+    {% trans "Change your password" %}
+  </a>
+  <a class="btn btn-link" href="{% url 'socialaccount_connections' %}" role="button">
+    {% trans "Manage account connections" %}
+  </a>
+  <a class="btn btn-primary {% if is_author %}disabled{% endif %}" href="{% url 'upgrade' %}" role="button">
     {% trans "Become an author" %}
   </a>
-{% else %}
-  <span class="d-inline-block" data-mdb-toggle="popover" data-mdb-content="You are an author already">
-    <a class="btn text-white disabled" style="background-color: #3b5998;" href="{% url 'upgrade' %}" role="button">{% trans "Become an author" %}</a>
-  </span>
-{% endif %}
+</div>
 {% endblock content %}
+
+{% block scripts %}
+<script>
+document.getElementById("timezone").addEventListener("change", ({ target }) => target.form.submit());
+</script>
+{% endblock scripts %}
