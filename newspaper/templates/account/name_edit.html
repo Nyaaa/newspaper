@@ -6,7 +6,7 @@
 
 {% block content %}
 <form action="" method="post">
-  <h4>Change name:</h4>
+  <h4>{% trans "Change name" %}:</h4>
   {% csrf_token %}
   <div class="form-group">
     {% for field in form %}
@@ -31,7 +31,7 @@
         </div>
       {% endif %}
     {% endfor %}
-    <button type="submit" class="btn btn-success">Save</button>
+    <button type="submit" class="btn btn-success">{% trans "Save" %}</button>
   </div>
 </form>
 {% endblock content %}

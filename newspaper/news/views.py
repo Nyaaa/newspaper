@@ -14,6 +14,7 @@ from .tasks import notification
 from django.contrib.contenttypes.models import ContentType
 from django.http import JsonResponse
 from django.apps import apps
+from django.utils.translation import gettext as _
 
 
 # Create your views here.
@@ -40,11 +41,11 @@ class PostList(FilterView):
         context = super().get_context_data(**kwargs)
         path = self.request.META.get('PATH_INFO')
         if path == '/articles/':
-            context['page_title'] = 'articles'
+            context['page_title'] = _('articles')
         elif path == '/news/':
-            context['page_title'] = 'news'
+            context['page_title'] = _('news')
         else:
-            context['page_title'] = 'search results'
+            context['page_title'] = _('search results')
         return context
 
 
@@ -83,7 +84,7 @@ class PostCreate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
     model = Post
     template_name = 'post_edit.html'
     permission_required = ('news.add_post',)
-    success_message = 'Post "%(title)s" was created successfully'
+    success_message = _('Post "%(title)s" was created successfully')
 
     def form_valid(self, form):
         post = form.save(commit=False)
@@ -114,7 +115,7 @@ class PostUpdate(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
     model = Post
     template_name = 'post_edit.html'
     permission_required = ('news.change_post',)
-    success_message = 'Post "%(title)s" was updated successfully'
+    success_message = _('Post "%(title)s" was updated successfully')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -127,7 +128,7 @@ class PostDelete(SuccessMessageMixin, PermissionRequiredMixin, LoginRequiredMixi
     template_name = 'post_delete.html'
     success_url = reverse_lazy('post_list')
     permission_required = ('news.delete_post',)
-    success_message = "Post was deleted successfully"
+    success_message = _('Post was deleted successfully')
 
 
 class SearchResults(ListView):
@@ -144,7 +145,7 @@ class SearchResults(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page_title'] = 'search results'
+        context['page_title'] = _('search results')
         return context
 
 

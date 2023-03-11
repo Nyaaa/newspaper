@@ -1,18 +1,20 @@
 {% extends 'flatpages/default.html' %}
 {% load static %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% block title %}
 {% endblock title %}
 
 {% block content %}
+{% trans "Rating" as rating_text %}
 <!-- Jumbotron -->
 <div class="p-5 text-center bg-image">
   <img src="{% static 'img/logo.png' %}" class="img-fluid" alt="logo" />
 </div>
 <!-- Jumbotron -->
 <!-- Top posts -->
-<h1 class="text-center mt-3">Top posts</h1>
+<h1 class="text-center mt-3">{% trans "Top posts" %}</h1>
 <div class="row row-cols-1 row-cols-md-3 g-4 mb-6">
   {% for post in top_posts %}
   <div class="col">
@@ -27,7 +29,7 @@
       <div class="card-footer text-muted">
         <div class="row">
           <div class="col d-flex justify-content-start">{{ post.author.short_name }}</div>
-          <div class="col d-flex justify-content-end">Rating: {{ post.votes.sum_rating }}</div>
+          <div class="col d-flex justify-content-end">{{ rating_text }}: {{ post.votes.sum_rating }}</div>
         </div>
       </div>
     </div>
@@ -36,7 +38,7 @@
 </div>
 <!-- Top posts -->
 <!--Top comments-->
-<h1 class="text-center mt-3">Top comments</h1>
+<h1 class="text-center mt-3">{% trans "Top comments" %}</h1>
 <div class="row row-cols-1 row-cols-md-3 g-4 mb-6">
   {% for comment in top_comments %}
   <div class="col">
@@ -48,7 +50,7 @@
       <div class="card-footer text-muted">
         <div class="row">
           <div class="col d-flex justify-content-start">{{ comment.user }}</div>
-          <div class="col d-flex justify-content-end">Rating: {{ comment.votes.sum_rating }}</div>
+          <div class="col d-flex justify-content-end">{{ rating_text }}: {{ comment.votes.sum_rating }}</div>
         </div>
       </div>
     </div>
@@ -57,15 +59,15 @@
 </div>
 <!--Top comments-->
 <!--Top authors-->
-<h1 class="text-center mt-3">Top authors</h1>
+<h1 class="text-center mt-3">{% trans "Top authors" %}</h1>
 <div class="d-flex justify-content-center">
   <div class="col-auto">
     <table aria-describedby="top authors" class="table">
       <thead>
       <tr>
         <td>#</td>
-        <td>Name</td>
-        <td>Rating</td>
+        <td>{% trans "Name" %}</td>
+        <td>{{ rating_text }}</td>
       </tr>
       </thead>
       <tbody>

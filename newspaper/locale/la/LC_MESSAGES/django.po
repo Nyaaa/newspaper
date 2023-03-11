@@ -1,0 +1,269 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-11 17:17+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: news/forms.py:19
+msgid "Text and title cannot be identical"
+msgstr ""
+
+#: news/forms.py:29
+msgid "Post a new comment"
+msgstr ""
+
+#: news/views.py:44
+msgid "articles"
+msgstr ""
+
+#: news/views.py:46
+msgid "news"
+msgstr ""
+
+#: news/views.py:48 news/views.py:148
+msgid "search results"
+msgstr ""
+
+#: news/views.py:87
+#, python-format
+msgid "Post \"%(title)s\" was created successfully"
+msgstr ""
+
+#: news/views.py:118
+#, python-format
+msgid "Post \"%(title)s\" was updated successfully"
+msgstr ""
+
+#: news/views.py:131
+msgid "Post was deleted successfully"
+msgstr ""
+
+#: templates/account/login.html:6 templates/account/login.html:9
+msgid "Sign In"
+msgstr ""
+
+#: templates/account/login.html:12
+msgid "with"
+msgstr ""
+
+#: templates/account/login.html:26
+msgid "or"
+msgstr ""
+
+#: templates/account/login.html:48
+msgid "Remember me"
+msgstr ""
+
+#: templates/account/login.html:54
+msgid "Forgot password?"
+msgstr ""
+
+#: templates/account/login.html:62
+msgid "Not a member?"
+msgstr ""
+
+#: templates/account/login.html:62
+msgid "Register"
+msgstr ""
+
+#: templates/account/logout.html:5 templates/account/logout.html:8
+msgid "Sign Out"
+msgstr ""
+
+#: templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: templates/account/name_edit.html:5 templates/account/name_edit.html:9
+msgid "Change name"
+msgstr ""
+
+#: templates/account/name_edit.html:34 templates/account/subscriptions.html:19
+#: templates/post_edit.html:42 templates/post_edit.html:47
+msgid "Save"
+msgstr ""
+
+#: templates/account/profile.html:7
+msgid "Hello"
+msgstr ""
+
+#: templates/account/profile.html:9
+msgid "Change your name"
+msgstr ""
+
+#: templates/account/profile.html:10
+msgid "Manage your subscriptions"
+msgstr ""
+
+#: templates/account/profile.html:11
+msgid "Manage your email"
+msgstr ""
+
+#: templates/account/profile.html:12
+msgid "Change your password"
+msgstr ""
+
+#: templates/account/profile.html:13
+msgid "Manage account connections"
+msgstr ""
+
+#: templates/account/profile.html:17 templates/account/profile.html:21
+msgid "Become an author"
+msgstr ""
+
+#: templates/account/signup.html:5
+msgid "Signup"
+msgstr ""
+
+#: templates/account/signup.html:8
+msgid "Sign up"
+msgstr ""
+
+#: templates/account/subscriptions.html:5
+msgid "Manage subscriptions"
+msgstr ""
+
+#: templates/account/subscriptions.html:9
+msgid "Your subscriptions"
+msgstr ""
+
+#: templates/flatpages/default.html:58 templates/posts.html:14
+msgid "Home"
+msgstr ""
+
+#: templates/flatpages/default.html:61
+msgid "News"
+msgstr ""
+
+#: templates/flatpages/default.html:64
+msgid "Articles"
+msgstr ""
+
+#: templates/flatpages/default.html:156
+msgid "Profile"
+msgstr ""
+
+#: templates/flatpages/default.html:160
+msgid "Not logged in"
+msgstr ""
+
+#: templates/flatpages/default.html:166
+msgid "Log out"
+msgstr ""
+
+#: templates/flatpages/default.html:170
+msgid "Log in"
+msgstr ""
+
+#: templates/flatpages/home.html:10
+msgid "Rating"
+msgstr ""
+
+#: templates/flatpages/home.html:17
+msgid "Top posts"
+msgstr ""
+
+#: templates/flatpages/home.html:41
+msgid "Top comments"
+msgstr ""
+
+#: templates/flatpages/home.html:62
+msgid "Top authors"
+msgstr ""
+
+#: templates/flatpages/home.html:69
+msgid "Name"
+msgstr ""
+
+#: templates/post.html:22
+msgid "Posted by"
+msgstr ""
+
+#: templates/post.html:22
+msgid "on"
+msgstr ""
+
+#: templates/post.html:36
+msgid "Comments"
+msgstr ""
+
+#: templates/post.html:61
+msgid "None yet!"
+msgstr ""
+
+#: templates/post.html:64
+msgid "Be the first to comment"
+msgstr ""
+
+#: templates/post.html:69
+msgid "Post"
+msgstr ""
+
+#: templates/post_delete.html:5 templates/post_delete.html:9
+msgid "Delete post"
+msgstr ""
+
+#: templates/post_delete.html:13
+msgid "Do you really want to delete"
+msgstr ""
+
+#: templates/post_delete.html:14
+msgid "Delete"
+msgstr ""
+
+#: templates/post_edit.html:7
+msgid "Edit post"
+msgstr ""
+
+#: templates/post_edit.html:9 templates/post_edit.html:18
+msgid "New post"
+msgstr ""
+
+#: templates/post_edit.html:51
+msgid "Cancel"
+msgstr ""
+
+#: templates/posts.html:24
+msgid "Filter"
+msgstr ""
+
+#: templates/posts.html:39
+msgid "Clear filters"
+msgstr ""
+
+#: templates/posts.html:46
+msgid "All"
+msgstr ""
+
+#: templates/posts.html:48
+msgid "Subscribe"
+msgstr ""
+
+#: templates/posts.html:52
+msgid "Posts"
+msgstr ""
+
+#: templates/posts.html:95
+msgid "Nothing here!"
+msgstr ""
+
+#: templates/posts.html:111
+msgid "Previous"
+msgstr ""
+
+#: templates/posts.html:112
+msgid "Next"
+msgstr ""

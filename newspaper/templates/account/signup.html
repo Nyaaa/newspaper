@@ -5,10 +5,10 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<h1 class="text-center">Sign up</h1>
+{% trans "Sign up" as title_text %}
+<h1 class="text-center">{{ title_text }}</h1>
   <form class="signup needs-validation" id="signup_form" method="post" action="{% url 'account_signup' %}" novalidate>
     {% csrf_token %}
-
     {% if form %}
       <!-- Display Form -->
       {% for field in form %}
@@ -45,6 +45,6 @@
     </div>
 
     <!-- Submit button -->
-    <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+    <button type="submit" class="btn btn-primary btn-block mb-4">{{ title_text }}</button>
   </form>
 {% endblock %}

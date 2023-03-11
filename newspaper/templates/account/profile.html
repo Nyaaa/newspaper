@@ -1,21 +1,24 @@
 {% extends "account/base.html" %}
 {% load account socialaccount %}
 {% load widget_tweaks %}
+{% load i18n %}
 
 {% block content %}
-<h1>Hello, {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user }}{% endif %}!</h1>
+<h1>{% trans "Hello" %}, {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user }}{% endif %}!</h1>
 <ul>
-  <li><a href="{% url 'name_edit' %}">Change your name</a></li>
-  <li><a href="{% url 'subscriptions' %}">Manage your subscriptions</a></li>
-  <li><a href="{% url 'account_email' %}">Manage your email</a></li>
-  <li><a href="{% url 'account_change_password' %}">Change your password</a></li>
-  <li><a href="{% url 'socialaccount_connections' %}">Manage account connections</a></li>
+  <li><a href="{% url 'name_edit' %}">{% trans "Change your name" %}</a></li>
+  <li><a href="{% url 'subscriptions' %}">{% trans "Manage your subscriptions" %}</a></li>
+  <li><a href="{% url 'account_email' %}">{% trans "Manage your email" %}</a></li>
+  <li><a href="{% url 'account_change_password' %}">{% trans "Change your password" %}</a></li>
+  <li><a href="{% url 'socialaccount_connections' %}">{% trans "Manage account connections" %}</a></li>
 </ul>
 {% if not is_author %}
-  <a class="btn text-white" style="background-color: #3b5998;" href="{% url 'upgrade' %}" role="button">Become an author</a>
+  <a class="btn text-white" style="background-color: #3b5998;" href="{% url 'upgrade' %}" role="button">
+    {% trans "Become an author" %}
+  </a>
 {% else %}
   <span class="d-inline-block" data-mdb-toggle="popover" data-mdb-content="You are an author already">
-    <a class="btn text-white disabled" style="background-color: #3b5998;" href="{% url 'upgrade' %}" role="button">Become an author</a>
+    <a class="btn text-white disabled" style="background-color: #3b5998;" href="{% url 'upgrade' %}" role="button">{% trans "Become an author" %}</a>
   </span>
 {% endif %}
 {% endblock content %}

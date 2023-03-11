@@ -1,16 +1,17 @@
 {% extends 'flatpages/default.html' %}
+{% load i18n %}
 
 {% block title %}
-Delete post
+{% trans "Delete post" %}
 {% endblock title %}
 
 {% block content %}
-<h1 class="text-center">Delete post?</h1>
+<h1 class="text-center">{% trans "Delete post" %}?</h1>
 <hr>
 <form class="text-center" action="" method="post">
   {% csrf_token %}
-  <p>Do you really want to delete "{{ object.title }}"?</p>
-  <button type="submit" class="btn btn-danger">Delete</button>
+  <p>{% trans "Do you really want to delete" %} "{{ object.title }}"?</p>
+  <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
 </form>
 <br>
 {% endblock content %}

@@ -1,11 +1,12 @@
 {% extends 'flatpages/default.html' %}
 {% load widget_tweaks %}
+{% load i18n %}
 
 {% block title %}
   {% if post.title %}
-    Edit post
+    {% trans "Edit post" %}
   {% else %}
-    New post
+    {% trans "New post" %}
   {% endif %}
 {% endblock title %}
 
@@ -14,7 +15,7 @@
   {% if post.title %}
     {{ post.title }}
   {% else %}
-    New post
+    {% trans "New post" %}
   {% endif %}
 </h1>
 <hr>
@@ -38,16 +39,16 @@
   <div class="form-group">
     {% if can_post %}
     <button type="submit" class="btn btn-success">
-      <span class="glyphicon glyphicon-ok"></span>Save
+      {% trans "Save" %}
     </button>
     {% else %}
     <span class="d-inline-block" data-mdb-placement="top" data-mdb-toggle="popover" data-mdb-content="You have reached the limit of 3 posts per day">
       <button type="submit" class="btn btn-danger" disabled>
-        <span class="glyphicon glyphicon-ok"></span>Save
+        {% trans "Save" %}
       </button>
     </span>
     {% endif %}
-    <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-default">Cancel</a>
+    <a href="{{request.META.HTTP_REFERER|escape}}" class="btn btn-default">{% trans "Cancel" %}</a>
   </div>
 </form>
 <br>

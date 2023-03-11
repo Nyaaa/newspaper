@@ -1,5 +1,6 @@
 {% extends 'flatpages/default.html' %}
 {% load custom_filters %}
+{% load i18n %}
 
 {% block title %}
 {{ post.title }}
@@ -17,7 +18,9 @@
 </div>
 <p>{{ post.text|censor }}</p>
 <div class="row">
-  <div class="col d-flex justify-content-start"><small class="text-muted">Posted by {{ post.author }} on {{ post.created|date:'d M Y' }}</small></div>
+  <div class="col d-flex justify-content-start"><small class="text-muted">
+    {% trans "Posted by" %} {{ post.author }} {% trans "on" %} {{ post.created|date:'d M Y' }}
+  </small></div>
   <div class="col d-flex justify-content-end">
       <a href="#" data-model="post" data-id="{{ post.id }}" data-value=1 class="text-success like-button">
         <i class="fas fa-arrow-circle-up"></i></a>
@@ -30,7 +33,7 @@
 
 <div class="row d-flex justify-content-center text-center">
   <div class="col-md-8">
-    <p id="comments">Comments:</p>
+    <p id="comments">{% trans "Comments" %}:</p>
     {% if comments %}
     <!-- Comments -->
     {% for comment in comments %}
@@ -55,15 +58,15 @@
     {% endfor %}
     <!-- Comments -->
     {% else %}
-    <p>None yet!</p>
+    <p>{% trans "None yet!" %}</p>
     {% endif %}
     {% if user.is_authenticated %}
-      <p>Be the first to comment:</p>
+      <p>{% trans "Be the first to comment" %}:</p>
       <form action="" method="post">
         {% csrf_token %}
         {{ form.text }}
         <div class="col-xl-12"></div>
-        <button type="submit" class="btn btn-primary mt-3">Post</button>
+        <button type="submit" class="btn btn-primary mt-3">{% trans "Post" %}</button>
       </form>
     {% endif %}
   </div>

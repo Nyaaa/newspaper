@@ -6,7 +6,7 @@
 
 {% block content %}
 <form action="" method="post">
-  <h4>Your subscriptions:</h4>
+  <h4>{% trans "Your subscriptions" %}:</h4>
   {% csrf_token %}
   <div class="d-flex justify-content-center">
     <div class="form-group">
@@ -16,7 +16,7 @@
         </div>
       {% endfor %}
       <button type="submit" class="btn btn-success">
-        <span class="glyphicon glyphicon-ok"></span>Save
+        <span class="glyphicon glyphicon-ok"></span>{% trans "Save" %}
       </button>
     </div>
   </div>
