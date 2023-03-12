@@ -10,6 +10,7 @@ from news.models import Author
 from django.contrib import messages
 from django.utils import timezone
 import pytz
+from django.utils.translation import gettext as _
 
 
 # Create your views here.
@@ -47,7 +48,7 @@ def upgrade_me(request):
         authors.user_set.add(user)
     if not Author.objects.filter(user=user).first():
         Author.objects.create(user=user)
-        messages.success(request, 'Congratulations! You can now publish news and articles!')
+        messages.success(request, _('Congratulations! You can now publish news and articles!'))
     return redirect(reverse_lazy('profile'))
 
 

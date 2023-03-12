@@ -4,12 +4,13 @@ from allauth.socialaccount.forms import SignupForm as SSignupForm
 from django.contrib.auth.models import Group, User
 from news.templatetags.custom_filters import CENSOR_LIST
 from news.models import Category
+from django.utils.translation import gettext as _
 
 
 class BasicSignupForm(SignupForm):
-    first_name = forms.CharField(max_length=30, label='First name')
-    last_name = forms.CharField(max_length=30, label='Last name')
-    sub_check = forms.BooleanField(initial=True, required=False, label='Subscribe to our weekly digest')
+    first_name = forms.CharField(max_length=30, label=_('First name'))
+    last_name = forms.CharField(max_length=30, label=_('Last name'))
+    sub_check = forms.BooleanField(initial=True, required=False, label=_('Subscribe to our weekly digest'))
 
     def save(self, request):
         user = super(BasicSignupForm, self).save(request)
@@ -24,8 +25,8 @@ class BasicSignupForm(SignupForm):
 
 
 class SocialSignupForm(SSignupForm):
-    first_name = forms.CharField(max_length=30, label='First name')
-    last_name = forms.CharField(max_length=30, label='Last name')
+    first_name = forms.CharField(max_length=30, label=_('First name'))
+    last_name = forms.CharField(max_length=30, label=_('Last name'))
 
     def save(self, request):
         user = super(SocialSignupForm, self).save(request)
@@ -46,9 +47,9 @@ class NameChangeForm(forms.ModelForm):
         for name in NameChangeForm.Meta.fields:
             dirty = cleaned_data.get(name)
             if dirty in CENSOR_LIST:
-                self._errors[name] = self.error_class(['Name is not allowed'])
+                self._errors[name] = self.error_class([_('Name is not allowed')])
             elif len(dirty) > 15:
-                self._errors[name] = self.error_class(['Name is too long'])
+                self._errors[name] = self.error_class([_('Name is too long')])
 
         return cleaned_data
 
