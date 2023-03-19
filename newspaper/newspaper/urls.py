@@ -28,4 +28,7 @@ urlpatterns = [
     path('usr/', include('usr.urls')),
     path('like/', VotesView.as_view(), name='likes'),
     path('i18n/', include('django.conf.urls.i18n')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include('api.urls')),
 ]
+
