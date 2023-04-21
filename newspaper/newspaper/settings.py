@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'news.apps.NewsConfig',
     'rest_framework',
+    'drf_yasg',
 ]
 
 SITE_ID = 1
